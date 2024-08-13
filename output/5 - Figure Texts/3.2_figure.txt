@@ -1,0 +1,19 @@
+Figure 3.2 depicts a draft of a Graphical User Interface (GUI) for a mechanical lung ventilator. The following points describe the UML diagram of the draft GUI:
+
+1. Navigation Bar:
+   - The top section contains five action buttons: "Back," "Settings," "Special Actions," "Start PSV," and "Stop PCV," each button styled distinctly to indicate interactive elements.
+
+2. Graphical Display Area:
+   - Below the navigation bar, there are three graphs displayed in a vertical arrangement.
+   - The first graph is labeled "PAW (cmH2O)" and shows a square wave pattern representing airway pressure measurements.
+   - The second graph is labeled "Vtidal (ml)" and illustrates a waveform pattern that could signify tidal volume changes.
+   - The third graph is labeled "Flow (lpm)" and depicts a fluctuating line that appears to reflect airflow measurements.
+
+3. Monitoring Information:
+   - To the right of the graphs, there is a box containing real-time monitoring data such as "Battery [%]," "Power Source," "Measured RR [bpm]" for respiratory rate, "Max P insp [cmH2O]" for inspiratory pressure, "PEEP [cmH2O]" for positive end-expiratory pressure, "Vt insp [ml]" for inspiratory tidal volume, "Vt exp [ml]" for expiratory tidal volume, "MV [lpm]" for minute ventilation, and "FiO2 [%]" for fraction of inspired oxygen concentration.
+
+4. Alarm Interface:
+   - At the bottom, there is an "Silence alarm" button on the left, with a highlighted and textured appearance indicative of actionable control.
+   - Adjacent to the silence button, there is a banner labeled "Alarm messages" which likely serves as a notification area regarding the status or alerts pertaining to the ventilator system.
+
+Overall, the diagram of the GUI is cleanly laid out with a focus on displaying critical ventilation parameters and providing quick access to important functionalities with clear visual cues for navigation and alarm management in the clinical setting.

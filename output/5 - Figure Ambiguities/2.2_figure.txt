@@ -1,0 +1,19 @@
+The description of the high-level view of ventilator sensors contains several ambiguities and areas that could benefit from clarification:
+
+1. **Multiple Pressure Sensors Named PS**: The text mentions a pressure sensor named PS in multiple contexts without clear differentiation. There is a PS associated with the Gas Blender (GB), a PS ins measuring pressure at the entrance to the patient, and a PS exp measuring pressure in the expiratory line. It's ambiguous whether "PS" refers to a single sensor with multiple measurement points or multiple sensors. This could be clarified by assigning unique identifiers to each pressure sensor.
+
+2. **Gas Blender (GB) Functionality**: While it's stated that the GB is responsible for mixing air and oxygen, it's not clear how the proportion of the mix is controlled or monitored. Is the mix ratio adjustable, and if so, how is this achieved and measured?
+
+3. **IN Valve Functionality**: The description mentions that the IN valve regulates the entry of the gas into the ventilator but does not specify how this regulation is achieved or controlled. Is the IN valve automatically or manually adjusted, and based on what parameters?
+
+4. **Flow Sensor FI1 and FI2 Specifics**: The text describes FI1 as measuring unidirectional flow and FI2 as measuring bidirectional flow, but it doesn't explain the significance of this difference in functionality. Why is there a need for both unidirectional and bidirectional flow measurements, and how do these measurements impact the ventilation process?
+
+5. **GUI Features and Controls**: The description of the GUI is vague, mentioning only a switch activated by AC or battery and an LED indicator. It lacks details on what parameters can be monitored and controlled through the GUI, how the user interacts with it, and what specific information the LED indicator conveys.
+
+6. **PEEP Valve Operation**: While the text states that the PEEP valve ensures a minimum level of pressure is maintained in the lungs after exhalation, it does not explain how this is achieved. Is the PEEP valve pressure adjustable, and if so, how is this adjustment made and monitored?
+
+7. **Legend Box Consistency**: The legend box is helpful but introduces potential confusion by listing "PS" both as an abbreviation for "pressure sensor" in general and as specific sensors (PS ins, PS exp) without clear differentiation. This could be made clearer by using distinct naming or numbering for each pressure sensor throughout the document.
+
+8. **Sensor Connectivity and Data Flow**: The description does not specify how the sensors are connected to the ventilator's control system or how data from these sensors is used to adjust ventilation parameters. Clarification on the data flow and control logic would provide a more comprehensive understanding of the system's operation.
+
+Addressing these ambiguities would enhance the clarity and completeness of the description, providing a more detailed and understandable overview of the ventilator sensors and their functions.

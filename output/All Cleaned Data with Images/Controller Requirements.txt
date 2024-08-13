@@ -1,0 +1,147 @@
+4 Controller Requirements
+
+Figure 4.1: Controller state machine
+Figure 4.1 depicts the Controller state machine of a mechanical lung ventilator. The UML diagram is a state diagram that describes the various states and transitions of the ventilator's controller. Below are the details of the diagram in well-defined points:
+
+1. **Start-up State**:
+   - There is an initial state indicated by a solid circle, which transitions to the "Start-up" state when a `powerOn` event occurs.
+   - Once start-up has completed (`start-up ended`), the system transitions to the "SelfTest" state.
+   - An `error` transition will move the system from the "Start-up" state to the "FailSafe" state.
+   - Should a `powerOff` event occur, the system will immediately transition to a final state, indicated by a circle with a surrounding ring.
+
+2. **SelfTest State**:
+   - In this state, the system performs a self-test to ensure that the ventilator is functioning correctly.
+   - If the self-test is passed (`selftestPassed`), or if there is a command to resume ventilation, it transitions to the "VentilationOff" state.
+   - An `error` transition will move the system from the "SelfTest" state to the "FailSafe" state.
+   - The "SelfTest" state can also transition to the final state if a `powerOff` event occurs.
+
+3. **VentilationOff State**:
+   - This is where the ventilator is not actively ventilating the patient.
+   - From this state, `startPCV` command initiates Pressure Controlled Ventilation ("PCV" state) and `startPSV` command initiates Pressure Support Ventilation ("PSV" state).
+   - An `error` transition will move the system from the "VentilationOff" state to the "FailSafe" state.
+   - A `powerOff` event here, as with other states, leads to the final state.
+
+4. **PCV State**:
+   - This states represent the active ventilation mode - Pressure Controlled Ventilation (PCV).
+   - When active in PCV mode, a `moveToPSV` command can transition the system to PSV mode.
+   - If ventilation needs to be stopped (`stopVentilation`), the system goes back to "VentilationOff" state.
+   - An `error` transition will move the system from the "PCV" state to the "FailSafe" state.
+   - A `powerOff` event here, as with other states, leads to the final state.
+
+5. **PSV States**
+   - This states represent the active ventilation modes - Pressure Support Ventilation (PSV).
+   - When active in PSV mode, an `apneaLag` command can transition the system to PCV mode.
+   - If ventilation needs to be stopped (`stopVentilation`), the system goes back to "VentilationOff" state.
+   - An `error` transition will move the system from the "PSV" state to the "FailSafe" state.
+   - A `powerOff` event here, as with other states, leads to the final state.
+   
+6. **Transitions between Modes**:
+   - The system can transition between PCV and PSV modes as mentioned, allowing the ventilator to adapt to the treatment required.
+   - There is a special notation for "apneaLag," indicating a specific condition that relates to the transition within the ventilation modes.
+   
+7. **FailSafe State**:
+   - The "FailSafe" state is reached if an error is detected during any of the state phases.
+   - From here, a `powerOff` event happens in "FailSafe" state, and the system moves to the final state.
+
+The diagram uses standard Unified Modeling Language (UML) notations for states, transitions, events, and the initial and final states to depict the workflow of the controller within a mechanical lung ventilator.
+
+
+ID - Requirement / Rationale - Input Ref.
+CONT.1 - The controller shall implement the following modes (see Figure 4.1): - FUN.4
+CONT.1.1 - Start-up Mode: In start-up mode the controller initializes itself with default configuration parameters (if any), checks the system memory and the communication of the controller with the sensors and valves, as well as between the controller and the GUI. Start-up mode is completed once the required activities have been completed. - FUN.5
+CONT.1.2 - Self-Test Mode: in the Self Test mode the controller allows the GUI to do all the operations necessary to perform the self-test. - FUN.6
+CONT.1.3 - VentilationOff: In ventilation off, the machine does not ventilate, the in valve is closed and the out valve is opened.
+CONT.1.4 - Pressure Controlled Ventilation Mode: Pressure Controlled Ventilation mode is used when patients have no spontaneous respiration. - FUN.19
+CONT.1.5 - Pressure Support Ventilation Mode: Pressure Support Ventilation mode is used when the patients are able to initiate every breath and the machine supports them. - FUN.24
+CONT.1.6 - Fail-safe: the controller forces input and output valves to their de-energized states (in valve close and out valve open)
+
+Start-up Mode: In start-up mode the controller initializes itself with default configuration
+parameters.
+CONT.2 - The transition to Start-up Mode shall be allowed by pushing the power button located on the back side of the ventilator unit to turn it on. - FUN.5
+CONT.3 - The transition from Start-up Mode to Self test Mode shall occur once the configurations have been loaded and the internal checking is terminated. Rationale: At this point, the monitoring module is able to carry out the assigned functionality. - FUN.5
+
+SelfTest Mode: In the Self Test mode, the controller allows the GUI to do all the operations necessary to perform the self-test.
+CONT.4 - The transition from Self-Test Mode to VentilationOff Mode shall occur: - FUN.6
+CONT.4.1 - When the self-test procedure has successfully been completed - FUN.6
+CONT.4.2 - When the GUI asks for resuming ventilation - FUN.6
+
+Ventilation Off: In ventilation off, the machine does not ventilate, the in valve is closed and the out valve is opened.
+CONT.5 - The transition from VentilationOff to PSV shall occur if the change mode command is received from the GUI. Rationale: the ventilation starts in PCV mode when the user selects the start command from the GUI.
+CONT.6 - The transition from VentilationOff to PCV mode shall occur if the change mode command is received from the GUI. Rationale: the ventilation starts in PSV mode when the user selects the start command from the GUI.
+
+PCV Mode: In PCV mode patients have no spontaneous respiration.
+CONT.7 - The transition from PCV to PSV shall occur if ventilation is on, the transition from PCV to PSV shall occur at the end of a PCV inspiratory time if the change mode command has been received from the GUI. Rationale: the doctor decides when the patient has some ability to breathe spontaneously. - FUN.23
+CONT.8 - The transition from PCV to VentilationOff shall occur if the user stops the ventilation in PCV mode. Rationale: the ventilation stops when the user selects the stop command from the GUI.
+
+PSV Mode: In PSV mode patients are able to initiate every breath, and the machine supports
+them.
+CONT.9 - The transition from PSV to PCV shall occur if the patient does not trigger a breath within the time of the apnea trigger window. The switch shall occur with respiratory rate, target inspiratory pressure and I:E defined for the apnea backup mode. Rationale: the patient is not able to breathe - FUN.27
+CONT.10 - The transition from PSV to VentilationOff shall occur if the user stops the ventilation in PSV mode. Rationale: the ventilation stops when the user selects the stop command from the GUI.
+
+Fail-safe Mode: In fail-safe mode, the controller sets the valves to protect the patient.
+CONT.46 - The controller cannot return from fail-safe mode to any other mode without a power cycle (turn off and then turn on the machine).
+
+Final State (Stop Mode): In Final State the machine is turned off.
+CONT.11 - Final State shall be reached by pushing the power button located on the back side of the ventilator unit to turn it off. Rationale: the ventilator is turned off when the user pushes the power button on the ventilator unit.
+CONT.11.1 - During Final state, all parameters (if any) are to be safely stored before the final state is complete and the unit is de-energized.
+
+4.1 Start-up Mode
+ID - Requirement / Rationale - Input Ref.
+CONT.12 - A set of default values for all parameters shall be provided and loaded from a configuration file on the machine when it is turned on. The parameters are listed in Section 3.1.1. - FUN.5
+CONT.13 - The controller shall check the communication of the controller with the sensors and valves. - FUN.5.1
+CONT.14 - The controller shall check the communication of the controller with GUI. - FUN.5.1
+CONT.15 - If the pressure sensor fails to connect or reports an error condition after a fixed number of retries (maximum 5), the controller shall transition to the fail-safe mode.
+CONT.16 - If the external ADC fails to initialize or reports an error condition after a fixed number of retries (maximum 5), the controller shall transition to the fail-safe mode.
+
+4.2 SelfTest Mode
+ID - Requirement / Rationale - Input Ref.
+CONT.17 - During the self test mode the controller shall allow the GUI to perform all the self-test specified in the FUN.6. - FUN.6
+CONT.18 - During the self test mode the controller shall perform the self-test specified in the FUN.6. - FUN.6
+CONT.19 - If the SelfTest fails, the controller shall not be able to proceed to ventilation. - FUN.6
+
+4.3 PCV Mode
+ID - Requirement / Rationale - Input Ref.
+CONT.20 - In PCV mode the breathing cycle shall be defined by inspiratory pressure P_insp_PCV relative to atmosphere, respiratory rate (RR_PCV ) and the ratio between the inspiratory and expiratory times (I:E_PCV ). Rationale: this is the most appropriate procedure for COVID-19 patients as it allows the immediate reopening of the alveoli and is strongly recommended by the doctors and nurses in the COVID-19 wards, rather than the constant flow procedure. These characteristics of the ventilator pressure transient during the inspiratory cycle are crucial to avoid barotrauma and to minimise long term fatigue of muscles and alveoli induced by forced mechanical ventilation. - FUN.19
+CONT.21 - The breath cycle shall start with the inspiration phase. FUN.19
+CONT.22 - The cycle starts with the inspiration phase that lasts an Inspiratory time I = 60 x I:E_PCV /(RR_PCV x (1 + I:E_PCV )) seconds. After that the expiration phase begins. - FUN.20
+CONT.23 - At the end of an inspiration phase, if the Inspiratory Pause is set by the GUI, an Inspiratory Pause shall start (see CONT.41) - FUN.29
+CONT.24 - At the end of an inspiration phase, if inspiratory pause is not required and the Recruitment Maneuver (RM) is set by the GUI, a Recruitment Maneuver shall start (see CONT.43). - FUN.22 + PER.3
+CONT.25 - When in the expiration phase, a new inspiration shall be initiated either after a breathing cycle is over, or when a spontaneous breath is detected. The maximum duration of the expiration phase (i.e., the Expiratory time) yields E = 60 / (RR_PCV x (1 + I:E_PCV )). Rationale: While the main mode of PCV is mandatory breathing control with constant rate, clinical advice is that the patient also needs to be able to trigger a breath spontaneously. - FUN.21
+CONT.26 - Within the trigger window during the expiratory phase, in the case of spontaneous breathing, the ventilator shall trigger a new breathing cycle (i.e., it goes in inspiration phase) when it detects a sudden drop in pressure above the inhale trigger sensitivity (i.e., it yields the condition drop(PAW) > ITS_PCV )). Note that drop is positive if the pressure drops. Rationale: In a pressure-regulated ventilator, the intensity of pressure drops initiated by the patient is the easiest way to detect the spontaneous breathing attempt as per ventilator experts. - FUN.21
+CONT.27 - If the controller is in the expiration phase, and it does not detect a spontaneous breath (i.e., the condition drop(PAW) > ITS_PCV is false), within the expiration time, if the Expiratory Pause start is set by the GUI, an Expiratory Pause shall start (see CONT.42). - FUN.28
+CONT.28 - The target inspiratory pressure level shall be controlled by the Inspiratory Pressure parameter (P_insp_PCV ) and it is kept constant. - FUN.20
+
+4.4 PSV Mode
+ID - Requirement / Rationale - Input Ref.
+CONT.29 - The Pressure Support Ventilation (PSV) mode shall support the breathing of the patient with positive pressure up to a peak value of P_insp_PSV while the patient triggers every breath and maintains control of the respiratory rate. Rationale: PSV is not suitable for patients unable to initiate breaths on their own. - FUN.24
+CONT.30 - The breath cycle shall start with the inspiration phase. FUN.24
+CONT.31 - The target inspiratory pressure level shall be controlled by the Inspiratory Pressure parameter (P_insp_PSV ). - FUN.24
+CONT.32 - The inspiration phase lasts until the inspiration peak is reached but no later than the max_insp_time_psv is over. After that the expiration phase begins. Rationale: In PSV mode, the ventilator supports the patient who is supposed to breathe spontaneously. In case a spontaneous expiration is not triggered, the ventilator forces the expiration phase after a suitable timeout (around 7 sec) to wait for a spontaneous breath. - FUN.40
+CONT.33 - When the inspiratory flow (V_E) drops below a fraction of the peak flow (Expiratory Trigger Setting (ETS)) of a given breath (i.e., it yields the condition V_E<ETS*Peak V_E), the ventilator shall stop providing pressure allowing exhalation. - FUN.26
+CONT.34 - At the end of an inspiration phase, if the Inspiratory Pause is set by the GUI, an Inspiratory Pause shall start (see CONT.41). - FUN.29
+CONT.35 - At the end of an inspiration phase if no inspiration pause is required and the Recruitment Maneuver (RM) is set by the GUI, a Recruitment Maneuver shall start (see CONT.43). - PER.3
+CONT.36 - If the patient is in expiration phase:
+CONT.36.1 - A new inspiration shall be initiated by a sudden drop in pressure above the inhale trigger sensitivity (ITS_PSV ), which shall be set by the user (i.e., it yields the condition drop(PAW) > ITS_PSV). Rationale: In a pressure-regulated ventilator, the speed of pressure drop initiated by the patient is the easiest way to detect the spontaneous breathing attempt as per ventilator experts. - FUN.25
+CONT.36.2 - If the controller is in expiration phase and a spontaneous breath is not detected (i.e., the condition drop(PAW) > ITS_PSV ) is false), within the interval [min_exp_time_psv : apnea lag], if the Expiratory Pause is set by the GUI, an Expiratory Pause shall start (see CONT.42). - FUN.28
+CONT.36.3 - min_exp_time_psv shall be the half of the last_inspiration_time. min_exp_time_psv shall be in the interval [0.4 : 2] sec. Rationale: The min_exp_time_psv prevents moving immediately to inspiration allowing the patient to expirate.
+CONT.37 - If the patient does not trigger a breath within the time of the apnea trigger window (apnea lag) the ventilator shall switch to PCV mode (apnea backup ventilation) with respiratory rate RR_AP , inspiratory pressure P_insp AP , and the ratio between inspiratory time and Expiratory time I:E_AP . Rationale: Need to ensure patients continue to receive breaths. The operator needs to set the apnea backup PCV setting before starting the ventilation in PSV mode, otherwise the ventilator will not start operating. - FUN.27
+4.5 Requirements Common to all Modes
+ID - Requirement / Rationale - Input Ref.
+CONT.38 - When the ventilator is in Start-up or VentilationOff mode, the in valve pressure shall be set to close and the out valve shall be open. Rationale: if the machine is not ventilating the valves are in a secure configuration state, in valve is closed and out valve is opened.
+CONT.39 - When the ventilator is in an Inspiration state, the out valve shall be closed and the in valve pressure shall be set to target inspiratory pressure (P_insp of the corresponding mode).
+CONT.39.1 - P_insp_PCV if current mode is PCV. FUN.20
+CONT.39.2 - P_insp_PSV if current mode is PSV. FUN.24
+CONT.39.3 - P_insp AP if current model is PCV from apnea backup. FUN.27.2
+CONT.40 - When the ventilator is in an expiration state the in valve shall be closed (pressure 0) and the out valve shall be open. Rationale: The ventilator opens the out valve to allow the patient to expirate, while the in valve is closed to avoid air in.
+CONT.41 - In PCV and PSV modes there shall be the possibility to initiate an Inspiratory Pause if it is set by the GUI. Rationale: The Inspiratory Pause will initiate a forced hold at the end of inspiration, allowing for the measurement of the Plateau Pressure (PP), the pressure reached inside the alveoli at the end of the inspiratory cycle. PP may be lower than the Set Inspiratory Pressure (SIP) provided by the ventilator. The difference between PP and the PEEP is called Driving Pressure, DP (DP = PP - PEEP). - FUN.29
+CONT.41.1 - When the Inspiratory Pause is set by the GUI, the ventilator shall wait for the end of the next inspiration phase, and if the Inspiratory Pause still required, both the inspiratory and expiratory valves will close until the inspiratory pause is stopped by the GUI. - FUN.29
+CONT.41.2 - When inspiratory pause timeout (max_ins_pause) is over, the cycle shall proceed immediately to expiration. Rationale: The timeout prevents stopping the patient breath cycle in case of human error.
+CONT.42 - In PCV and PSV modes there shall be the possibility to initiate an Expiratory Pause if it is set by the GUI. Rationale: The Expiratory Pause will initiate a forced hold at the end of expiration, allowing the measurement of the AutoPEEP level for the patient, providing information on the level of obstruction in the exhalation channel. AutoPEEP may be zero for most patients or significantly different from zero for patients that have obstructions in the exhalation channel, as possibly generated by secretions. In this case, the small flow during exhalation may result in an incomplete drain of the alveoli during the expiration phase. - FUN.28
+CONT.42.1 - When the Expiratory Pause is set by the GUI, the ventilator shall wait for the end of the next expiration phase, and if the Expiratory Pause is still required, both the inspiratory and expiratory valves will close until the expiratory pause is stopped by the GUI. - FUN.28
+CONT.42.2 - When expiratory pause timeout (max_exp_pause) is over, the cycle shall proceed immediately to inspiration. Rationale: the timeout prevents stopping the patient breath cycle in case of human error.
+CONT.43 - In PCV and PSV mode, at the end of an inspiration and if inspiratory pause is not required, it shall be possible to initiate a lung recruitment procedure, termed Recruitment Maneuver (RM), if it is required by the GUI. Not available in North America. Rationale: The RM is an emergency procedure required immediately after the end of the intubation. RM consists in the prolonged lung inflation at increased inspiratory set pressure, as necessary to reactivate the alveoli immediately after intubation. - FUN.22
+CONT.43.1 - The controller shall stop RM if it is required from the GUI. Rationale: The GUI stops the RM if required by the user.
+CONT.43.2 - The Recruitment Maneuver, if not actively stopped by the GUI, has a timeout (max_rm_time). After the Recruitment Maneuver phase expiration phase begins. Rationale: It is not reasonable to keep the patient in this emergency state without letting him breathe.
+CONT.43.3 - In RM the out valve shall be closed and the in valve shall be opened to allow lung inflation at PRM. - FUN.22
+CONT.44 - If PAW exceeds Max P_insp during inspiration, the cycle shall proceed immediately to expiration. - FUN.40
+CONT.45 - Before monitoring a sudden drop in pressure above the inhale trigger sensitivity ITS, the controller shall wait for the trigger window (0.7 sec).

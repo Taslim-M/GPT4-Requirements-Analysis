@@ -1,0 +1,25 @@
+The provided image displays a UML (Unified Modeling Language) state machine diagram labeled "Figure 3.1: GUI state machine" which represents the various states and transitions in a graphical user interface (GUI) for, presumably, some kind of medical or technical equipment.
+
+At the beginning of the diagram, there is an initial pseudo-state, represented by a filled black circle, which indicates the starting point of the state machine. From this initial state, the system transitions to the "Start-up" state when the "powerOn" event occurs.
+
+The "Start-up" state has two possible transitions, both labeled with the event "start-up ended". One transition leads to the "Start" state with a condition "[ventilation=off]", and the other transition leads to the "Ventilation" state with a different condition "[ventilation=on]". In addition, the "Start-up" state allows for a direct transition to the final state (denoted by a circle with a border and a filled black circle inside) on the event "powerOff".
+
+From the "Start" state, there are three outbound transitions:
+1. To the "SelfTest" state on the occurrence of either "new Patient"
+2. To the "Menu" state when the event "resume ventilation is triggered.
+3. To the final state on the event "powerOff".
+
+The "SelfTest" state transitions directly to the "Menu" state when "selftestPassed". It stays in the same state if the event 'abortTest' or 'runSelfTest' occurs. It goes to the final state when "powerOff" occurs.
+
+The "Menu" state has multiple transitions:
+1. To the "Settings" state with the event "set param".
+2. To the "Ventilation" state when either "startPCV" or "startPSV" events are triggered.
+3. To the final state when "powerOff" occurs.
+
+The "Settings" state allows a transition back to the "Menu" on "save/goBack" with a guard "[ventilation=off]", and it also transitions to the "Ventilation" state on "save/goBack" with the guard "[ventilation=on]".
+
+The "Ventilation" state has transitions back to the "Menu" state on the "stopVentilation" event and to the final state via "powerOff". Also, it transitions to the "Settings" state when "set param" is triggered.
+
+All states, besides the initial, final, and Settings states, have a transition to the final state when the "powerOff" event occurs.
+
+This state machine diagram is utilized to articulate the GUI's behavior in response to certain events, and it showcases how the system flows between different states based on user input or other system events.

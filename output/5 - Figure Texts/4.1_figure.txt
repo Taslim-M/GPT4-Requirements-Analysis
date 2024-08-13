@@ -1,0 +1,44 @@
+Figure 4.1 depicts the Controller state machine of a mechanical lung ventilator. The UML diagram is a state diagram that describes the various states and transitions of the ventilator's controller. Below are the details of the diagram in well-defined points:
+
+1. **Start-up State**:
+   - There is an initial state indicated by a solid circle, which transitions to the "Start-up" state when a `powerOn` event occurs.
+   - Once start-up has completed (`start-up ended`), the system transitions to the "SelfTest" state.
+   - An `error` transition will move the system from the "Start-up" state to the "FailSafe" state.
+   - Should a `powerOff` event occur, the system will immediately transition to a final state, indicated by a circle with a surrounding ring.
+
+2. **SelfTest State**:
+   - In this state, the system performs a self-test to ensure that the ventilator is functioning correctly.
+   - If the self-test is passed (`selftestPassed`), or if there is a command to resume ventilation, it transitions to the "VentilationOff" state.
+   - An `error` transition will move the system from the "SelfTest" state to the "FailSafe" state.
+   - The "SelfTest" state can also transition to the final state if a `powerOff` event occurs.
+
+3. **VentilationOff State**:
+   - This is where the ventilator is not actively ventilating the patient.
+   - From this state, `startPCV` command initiates Pressure Controlled Ventilation ("PCV" state) and `startPSV` command initiates Pressure Support Ventilation ("PSV" state).
+   - An `error` transition will move the system from the "VentilationOff" state to the "FailSafe" state.
+   - A `powerOff` event here, as with other states, leads to the final state.
+
+4. **PCV State**:
+   - This states represent the active ventilation mode - Pressure Controlled Ventilation (PCV).
+   - When active in PCV mode, a `moveToPSV` command can transition the system to PSV mode.
+   - If ventilation needs to be stopped (`stopVentilation`), the system goes back to "VentilationOff" state.
+   - An `error` transition will move the system from the "PCV" state to the "FailSafe" state.
+   - A `powerOff` event here, as with other states, leads to the final state.
+
+5. **PSV States**
+   - This states represent the active ventilation modes - Pressure Support Ventilation (PSV).
+   - When active in PSV mode, an `apneaLag` command can transition the system to PCV mode.
+   - If ventilation needs to be stopped (`stopVentilation`), the system goes back to "VentilationOff" state.
+   - An `error` transition will move the system from the "PSV" state to the "FailSafe" state.
+   - A `powerOff` event here, as with other states, leads to the final state.
+   
+6. **Transitions between Modes**:
+   - The system can transition between PCV and PSV modes as mentioned, allowing the ventilator to adapt to the treatment required.
+   - There is a special notation for "apneaLag," indicating a specific condition that relates to the transition within the ventilation modes.
+   
+7. **FailSafe State**:
+   - The "FailSafe" state is reached if an error is detected during any of the state phases.
+   - From here, a `powerOff` event happens in "FailSafe" state, and the system moves to the final state.
+
+
+The diagram uses standard Unified Modeling Language (UML) notations for states, transitions, events, and the initial and final states to depict the workflow of the controller within a mechanical lung ventilator.

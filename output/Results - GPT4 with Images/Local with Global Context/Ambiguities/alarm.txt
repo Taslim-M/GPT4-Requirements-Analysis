@@ -1,0 +1,23 @@
+1. **Ambiguities or unclear statements in the Alarms section as a whole:**
+
+- AL.1 and AL.1.1 could be clearer. AL.1 states that the user can set alarm thresholds whether the ventilator is ventilating or not, but AL.1.1 specifies that if the ventilator is ventilating, the last saved thresholds are used. It's unclear what happens if the ventilator is not ventilating when changes are made. Does it use the last saved thresholds as well, or does it have a different set of thresholds?
+- AL.5 mentions that high priority alarm signals should be accompanied by information describing possible causes and actions to take, but it's not clear if this information is automatically displayed or if the operator must perform an action to display it.
+- AL.9's statement that the system shall prevent the operator from saving changes to the alarm preset could be interpreted as overly restrictive. It's unclear if this means the operator cannot modify any presets or if there are specific conditions under which changes are disallowed.
+
+2. **Ambiguities or unclear statements within the Alarms table:**
+
+- The table lists various alarms with conditions and priorities but does not specify the actions to be taken for each alarm. For example, AL.14.1 mentions detecting and signaling a battery failure but does not specify the response required from the system or the operator.
+- AL.38, AL.39, AL.40, and AL.41 all mention communication loss with different components but do not specify the system's expected behavior in such cases beyond raising an alarm.
+- The term "safe state" is used in several alarms (e.g., AL.16.1, AL.18.1) without a clear definition of what constitutes a safe state for the system or the patient.
+
+3. **Ambiguities or unclear statements within the Alarm list subsection:**
+
+- The alarm list subsection provides detailed conditions for each alarm but lacks clarity on the expected response or action for many alarms. For instance, what specific actions should be taken by the controller or the operator when an alarm is raised?
+- The use of technical terms without clear definitions (e.g., "PAW," "PEEP") could be confusing for users not familiar with them, although it can be argued that the target audience would understand these terms.
+
+4. **Ambiguities or unclear statements within the Visual alarm signals subsection:**
+
+- The subsection specifies colors, flashing frequencies, and duty cycles for different priority levels but does not address how these visual signals are prioritized or managed when multiple alarms occur simultaneously. This could lead to potential misunderstandings about which alarm should capture the operator's attention first.
+- The statement "The alarm is visualized using an RGB LED mounted on the ventilator" is clear in its intent but does not specify how multiple alarms are indicated simultaneously or if there's a hierarchy to the visual representation of alarms.
+
+Overall, while the Alarms section provides a comprehensive list of conditions and categorizations for alarms, it lacks specificity in certain areas, such as the actions to be taken in response to alarms, the management of multiple simultaneous alarms, and the operational details of visual alarm signals.

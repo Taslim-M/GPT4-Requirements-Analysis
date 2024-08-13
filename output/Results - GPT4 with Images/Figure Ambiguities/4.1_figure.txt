@@ -1,0 +1,21 @@
+The description of the Controller state machine for a mechanical lung ventilator provides a structured overview of the states and transitions within the system. However, there are a few ambiguities and areas that could benefit from clarification:
+
+1. **Ambiguity in Transition Conditions**:
+   - The description mentions that from the "SelfTest" state, if there is a command to resume ventilation, it transitions to the "VentilationOff" state. It's ambiguous whether this command is a specific event like `resumeVentilation` or if it's referring to the general action of resuming ventilation. This could be clarified by specifying the exact event or command that triggers this transition.
+
+2. **Inconsistent Terminology for Events**:
+   - The description uses both `error` and specific commands like `startPCV`, `startPSV`, etc., as transition triggers. However, it's not clear if `error` is a generic placeholder for various error types or a specific event. Clarifying whether different types of errors trigger different transitions or if `error` is a catch-all event for any error would help.
+
+3. **Special Notation for "apneaLag"**:
+   - It's mentioned that there is a special notation for "apneaLag," indicating a specific condition related to the transition within the ventilation modes. However, the description does not elaborate on what this special notation is or how it affects the transition. Providing details on how "apneaLag" is uniquely handled or represented in the state machine would resolve this ambiguity.
+
+4. **Details on the Final State**:
+   - The description mentions a final state, indicated by a circle with a surrounding ring, which the system transitions to upon a `powerOff` event from any state. However, it does not describe what happens in the final state or if any actions are taken by the system before it completely powers off. Clarifying whether the final state involves any system shutdown procedures or is simply a representation of the system being off would be useful.
+
+5. **FailSafe State Actions**:
+   - While it's clear that the system transitions to the "FailSafe" state upon detecting an error, the description does not specify what actions are taken in the "FailSafe" state. Does the system attempt to rectify the error, alert the user, or perform any specific operations to ensure patient safety? Detailing the behavior or actions within the "FailSafe" state would provide a clearer understanding of its purpose and functionality.
+
+6. **Transition from "VentilationOff" to Active Ventilation Modes**:
+   - The description indicates that commands (`startPCV` and `startPSV`) can initiate active ventilation modes from the "VentilationOff" state. However, it does not mention if any conditions or checks are required before these transitions can occur. For instance, is it necessary for the system to be in a specific state or condition to accept these commands? Clarifying any prerequisites for these transitions would enhance understanding.
+
+Addressing these ambiguities would improve the clarity and completeness of the description of the Controller state machine for the mechanical lung ventilator.

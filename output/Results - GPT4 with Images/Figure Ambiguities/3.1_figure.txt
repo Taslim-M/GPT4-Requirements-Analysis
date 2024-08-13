@@ -1,0 +1,17 @@
+The description of the GUI state machine contains several ambiguities that could lead to confusion or misinterpretation when trying to implement or analyze the system. Here are some identified ambiguities:
+
+1. **Ambiguous Transition Conditions**: The description mentions transitions based on conditions like "[ventilation=off]" and "[ventilation=on]" without specifying how or when these conditions are evaluated and updated. It's unclear if these conditions are set by user actions, system events, or both.
+
+2. **Overlapping Events with Different Outcomes**: The description indicates that the "SelfTest" state stays in the same state if the event 'abortTest' or 'runSelfTest' occurs. However, it's ambiguous how the system should behave if these events occur simultaneously or in quick succession. Additionally, the description of transitioning to the "SelfTest" state on the occurrence of either "new Patient" is incomplete and lacks clarity on the specific event or condition that triggers this transition.
+
+3. **Guard Conditions on Transitions**: The transitions from the "Settings" state back to the "Menu" or to the "Ventilation" state are based on the event "save/goBack" with guard conditions "[ventilation=off]" and "[ventilation=on]", respectively. It's ambiguous how these guards are checked and what happens if the "save/goBack" event occurs but neither condition is met. 
+
+4. **Final State Transitions**: While it's mentioned that all states besides the initial, final, and Settings states have a transition to the final state when the "powerOff" event occurs, it's ambiguous why the "Settings" state is excluded from this rule. This could be an oversight or imply a specific behavior that is not clearly explained.
+
+5. **Event Triggering Mechanism**: The description does not specify how events like "powerOn", "powerOff", "startPCV", "startPSV", etc., are triggered. Are these events triggered by user actions, system conditions, or external inputs? The lack of clarity on the event triggering mechanism leaves room for interpretation.
+
+6. **Incomplete Description of the "Start" State**: The transitions from the "Start" state are described, but there's no clear explanation of what this state represents or entails. Given its central role in the diagram, more detail would be helpful for understanding its function within the system.
+
+7. **Ambiguity in the "Menu" State Transitions**: The description mentions multiple transitions from the "Menu" state but does not clearly define the conditions under which these transitions occur, especially in cases where multiple events could be triggered in close succession.
+
+To resolve these ambiguities, a more detailed description of the state machine, including explicit definitions of events, conditions, and their interactions, would be necessary. Additionally, clarifying how the system handles simultaneous or conflicting events and conditions would improve the comprehensibility and implementability of the described state machine.

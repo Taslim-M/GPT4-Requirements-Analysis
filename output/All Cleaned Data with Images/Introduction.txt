@@ -1,0 +1,65 @@
+1 Introduction
+During the COVID-19 pandemic, a group of researchers was involved in the design, development, and certification of an electro-mechanical lung ventilator called MVM (Mechanical Ventilator Milano)1 [3]. The project started from the idea of the physicist Cristiano Galbiati, who was soon joined by dozens of physicists, engineers, physicians, and computer scientists from 12 countries around the world2 . The team was able to realize a ventilator that is reliable, easily reproducible on a large scale, available in a short amount of time, and at a limited cost [4]. The MVM has obtained the FDA (Food and Drug Administration) Emergency Use Authorization (EUA) followed by authorizations issued by Health Canada and the CE marking as well. The specification of the mechanical lung ventilator is inspired by MVM, with some simplifications to make it suitable as a case study: - we have removed one component, the supervisor which was responsible for monitoring the controller, the GUI, and the hardware. In the case of errors, it raises alarms if not already raised by the controller or the GUI, ensuring patient safety. - we use only visual alarms, instead of audio and visual alarms.
+
+1.1 Mechanical lung ventilator
+The mechanical lung ventilator is intended to provide ventilation support for patients that are in intensive therapy and that require mechanical ventilation. The ventilator proposed in this document works in pressure mode, i.e., the respiratory time cycle of the patient is controlled by pressure, and, therefore, this ventilator requires a source of compressed oxygen and medical air that are readily available in intensive care units. More precisely, the ventilator has two operative modes: Pressure Controlled Ventilation (PCV) and Pressure Support Ventilation (PSV). In the PCV mode, the respiratory cycle is kept constant and the pressure level changes between the target inspiratory pressure (P_insp) and the positive end-expiratory pressure (PEEP). New inspiration is initiated either after a breathing cycle is over, or when the patient spontaneously initiates a breath. In the former case, the breathing cycle is controlled by two parameters: the respiratory rate (RR) and the ratio between the inspiratory and expiratory times (I:E). In the latter case, a spontaneous breath is triggered when the ventilator detects a sudden pressure drop within the trigger window during expiration. The PSV mode is not suitable for patients that are not able to start breathing on their own because the respiratory cycle is controlled by the patient, and the ventilator partially takes over the work of breathing. A new respiratory cycle is initiated with the inspiratory phase, detected by the ventilator when a sudden pressure drop occurs. When the patient’s inspiratory flow drops below a set fraction of the peak flow, the ventilator stops the pressure support, thus allowing exhalation. If a new inspiratory phase is not detected within a certain amount of time (apnea lag), the ventilator will automatically switch to the PCV mode because it is assumed that the patient is not able to breathe alone. The ventilator allows the air to enter/exit through two valves, i.e., an input valve and an output valve. When the ventilator is not running, the valves are set to safe mode: the input valve is closed and the output valve is opened. In this configuration, the ventilator does not prevent breathing thanks to some relief valves. When the inspiration starts, the input valve is opened and the output valve is closed, while during the expiration the input valve is closed and the output valve is opened. Both in PCV and PSV mode, inspiratory pause, expiratory pause, and recruitment maneuver are allowed by user request. Inspiratory/Expiratory pause consists in closing the input and output valves of the ventilator respectively after the inspiration and expiration phases. The inspiratory pause allows measuring the pressure reached inside the alveoli at the end of the inspiratory cycle, while the expiratory pause allows measuring the residual pressure to check possible obstruction in the exhalation channel. The recruitment maneuver is an emergency procedure required after intubation, and it consists of prolonged lung inflation as necessary to reactivate the alveoli immediately; during this maneuver, the input valve is opened and the output valve is closed. The high-level software architecture, shown in Figure 1.1, illustrates the communication among the software components: graphical user interface (GUI) and controller. The GUI is a touchscreen panel that displays the information needed to check the respiratory condition, allows parameter setting, and displays ventilation parameters and alarm settings. When the controller receives operator input from the GUI, it communicates with the valve controllers, serial interfaces, and other subcomponents and sends them commands. Before starting the ventilation, the ventilator controller passed through three phases. The start-up in which the controller is initialized with default parameters, self-test which ensures that the hardware is fully functional, and ventilation off in which the controller is ready for ventilation when requested. If during ventilation and other phases the controller detects a severe condition that prevents the ventilator to sustain the ventilation, the machine is brought to fail-safe mode (in valve closed and out valve open).
+
+Figure 1.1: The high-level software architecture
+Description for Figure 1.1: The high-level software architecture, the UML diagram depicts the structure of a software system for a mechanical lung ventilator. The architecture is represented with the following components and interactions:
+
+1. Sensors/Actuators: This dashed capsule represents the hardware components that interact directly with the physical environment. The sensors collect data from the ventilator system, and the actuators carry out actions based on control signals.
+
+2. Controller: Illustrated by a solid rectangle, the controller is the central processing unit. It receives input from the sensors/actuators and processes it according to the software's logic to make decisions.
+
+3. Bidirectional Arrow between Sensors/Actuators and Controller: This double-headed arrow illustrates the interactive relationship between the Sensors/Actuators and Controller. In this case, it shows that the sensors/actuators receive and send data to the controller for processing.
+
+4. GUI (Graphical User Interface): Another solid rectangle represents the user interface through which a user interacts with the ventilator system. The GUI presents information to the user and captures user input.
+
+5. Serial Communication: An open circle denotes the method of communication between the controller and the GUI, indicating that they communicate through serial transmission.
+
+6. User: The stick figure symbolizes the end user or operator of the mechanical lung ventilator. This person uses the GUI to monitor the system, make inputs, and receive feedback.
+
+7. Bidirectional Arrow between GUI and User: This double-headed arrow illustrates the interactive relationship between the user and the GUI. The user both receives information from and provides input to the GUI.
+
+Overall, the diagram provides a simplified view of the key software components within a mechanical lung ventilator system and the basic interactions between them.
+
+
+1.2 Structure of the document
+This document is structured in the following chapters:
+- Chapter 2 presents the general specification of the ventilator: functional requirements,
+values and ranges of parameters and interfaces between components.
+- Chapter 3 presents the specifications of the GUI, which is responsible for receiving information from the user and displaying information to the user.
+- Chapter 4 presents the specification of the controller, which is responsible for controlling
+the phase of the respiratory cycle (inhalation, pause, exhalation) by operating on the
+valves and receiving information from sensors and commands from the GUI.
+- Chapter 5 presents the specification of the alarm system which is responsible for raising
+alarms.
+
+Requirement Numbering Convention
+The specification is divided in requirements, and the format of each requirement ID is:
+XXX.n.y
+Where:
+XXX = a three-letter code indicating a requirement type
+n = requirement number 1-9999
+y = sub-requirement number 0-9 (0 if a parent, 1 to 9 if a child)
+Three-letter code Description
+AL Alarm requirements
+CONT Controller requirements
+FUN Functional (general) requirements
+GUI GUI requirements
+INT Interfaces requirements
+PER Values and ranges requirements
+SAV Safety requirements
+1.3 Suggested outcomes
+During the development of the MVM software, no formal method has been applied, mainly because a lack of developers’ skills with any formal method. However, we want to propose this case study in order to demonstrate the feasibility of developing the ventilator by using a formal method based approach. Mechanical lung ventilators, as well as other medical devices which incorporate software, must be certified before their use. Several standards for the validation of medical devices have been proposed – as ISO 13485, ISO 14971, IEC 60601-1, EU Directive 2007/47/EC [28] –, but they mainly consider hardware aspects of the physical components of a device, and do not mention the software component. The only reference concerning the regulation of medical software is the standard IEC (International Electrotechnical Commission) 62304. This standard provides a very general description of common life cycle activities of the software development, without giving any indication regarding process models, or methods and techniques to assure safety and reliability.
+With this case study we aim to study the applicability of formal methods in software development of medical devices in order to satisfy the standards, IEC 62304 in this case.
+We have envisioned several aspects of the ventilator that could be the object of research activities. In the following, we give a non-exhaustive list of possible outcomes. - A classical approach consists in modeling the system or part of it and applying the classical V&V activities, like formal verification of the correctness or validation of scenarios. One could check that the behavior of the system is correct, like in case of some types of errors, the system goes into a fail-safe mode.
+- A critical aspect of the system is its temporal behavior. Many properties and constraints have explicit temporal requirements (like after 10 seconds ...). One could model these aspects and make a temporal analysis of the system.
+- After the good experience of ABZ2022, we decided to also include the GUI. Research activities could refer to modeling this critical component and analyzing the human-computer interaction.
+- Generation of executable source code and implement a prototype of the ventilator on a simple electronic board like Arduino (or part of it).
+
+Useful references
+- Book on a mechanical ventilation [5]
+- Papers about MVM: [1, 2, 3, 4]
+Acknowledgement
+We would like to thank all the people in the MVM team for the wonderful work we have done all together during the pandemic. We acknowledge the work done especially by Cristiano Galbiati, Reiner Kruecken, and Elvinia Riccobene.

@@ -1,0 +1,260 @@
+3 GUI Requirements
+
+Figure 3.1: GUI state machine
+The provided image displays a UML (Unified Modeling Language) state machine diagram labeled "Figure 3.1: GUI state machine" which represents the various states and transitions in a graphical user interface (GUI) for, presumably, some kind of medical or technical equipment.
+
+At the beginning of the diagram, there is an initial pseudo-state, represented by a filled black circle, which indicates the starting point of the state machine. From this initial state, the system transitions to the "Start-up" state when the "powerOn" event occurs.
+
+The "Start-up" state has two possible transitions, both labeled with the event "start-up ended". One transition leads to the "Start" state with a condition "[ventilation=off]", and the other transition leads to the "Ventilation" state with a different condition "[ventilation=on]". In addition, the "Start-up" state allows for a direct transition to the final state (denoted by a circle with a border and a filled black circle inside) on the event "powerOff".
+
+From the "Start" state, there are three outbound transitions:
+1. To the "SelfTest" state on the occurrence of either "new Patient"
+2. To the "Menu" state when the event "resume ventilation is triggered.
+3. To the final state on the event "powerOff".
+
+The "SelfTest" state transitions directly to the "Menu" state when "selftestPassed". It stays in the same state if the event 'abortTest' or 'runSelfTest' occurs. It goes to the final state when "powerOff" occurs.
+
+The "Menu" state has multiple transitions:
+1. To the "Settings" state with the event "set param".
+2. To the "Ventilation" state when either "startPCV" or "startPSV" events are triggered.
+3. To the final state when "powerOff" occurs.
+
+The "Settings" state allows a transition back to the "Menu" on "save/goBack" with a guard "[ventilation=off]", and it also transitions to the "Ventilation" state on "save/goBack" with the guard "[ventilation=on]".
+
+The "Ventilation" state has transitions back to the "Menu" state on the "stopVentilation" event and to the final state via "powerOff". Also, it transitions to the "Settings" state when "set param" is triggered.
+
+All states, besides the initial, final, and Settings states, have a transition to the final state when the "powerOff" event occurs.
+
+This state machine diagram is utilized to articulate the GUI's behavior in response to certain events, and it showcases how the system flows between different states based on user input or other system events.
+
+
+ID - Requirement / Rationale - Input Ref.
+GUI.1 - GUI shall implement the following modes (see Figure 3.1): FUN.4
+GUI.1.1 - Start-up Mode: In start-up mode the GUI initializes itself with default configuration parameters. Start-up mode is completed once start-up parameter validation and initialization have been completed.
+GUI.1.2 - Start Mode: allows the user to resume ventilation or to start the ventilation for a new patient.
+GUI.1.3 - Menu Mode: allows the user to set parameters and startthe ventilation.
+GUI.1.4 - Self Test Mode: allows the user to perform a sequence  of tests.
+GUI.1.5 - Ventilation Mode: the GUI is monitoring and controlling the ventilation of the patient. Start-up Mode: In start-up mode the GUI initializes itself with default configuration parameters.
+GUI.2 - The transition from Start-up Mode to Ventilation occurs if the GUI finds that the controller is already running in ventilation mode. In this case, when exiting the start-up mode, it resumes the ventilation. Rationale: the GUI may have crashed while the controller keeps ventilating. When the GUI is restarted, it resumes its operation reading the settings from the controller. - FUN.10
+GUI.3 - The transition from Start-up Mode to Start shall occur once the configurations have been loaded and the controller is not running in ventilation. - FUN.10
+
+Start Mode: In start mode, the user can resume ventilation or start ventilation on a new patient.
+GUI.4 - The transition from Start to Self Test shall occur if the user wants to test the machine and set the proper parameters for a new patient.Rationale: the clinician decides to check the status of the machine sensors before starting ventilation. - FUN.4
+GUI.5 - The transition from Start to Menu shall occur if the doctor decides to resume ventilation and the system has not been powered off for more than 15 minutes. Rationale: the clinician wants to resume the ventilation of the connected patient, without performing the self-test procedures. - FUN.10 Menu Mode: Menu mode allows the user to select different activities
+GUI.6 - DELETED
+GUI.7 - The transition from Menu to Ventilation shall occur when the Self-test is passed if required (new patient connected), and the clinician wants to proceed with the ventilation. - FUN.4
+GUI.8 - The transition from Menu to Settings shall occur when the Self-test is passed if required (new patient connected),
+and the clinician wants to change the settings for the ventilation. - FUN.4
+Self Test Mode: Self test mode allows the user to perform a sequence of tests
+
+GUI.9 - The transition from Self Test to Menu shall occur if the test passes. - FUN.6
+GUI.10 - If the Self Test fails, the GUI is blocked with a message, and the user shall obtain a replacement of the unit and tag the problematic unit for a maintenance inspection. - FUN.7
+GUI.112 - The GUI shall remain in Self-Test mode if the user interrupts the self-test procedure.
+GUI.113 - The GUI shall remain in Self-Test mode if the self-test has been interrupted and the user runs again the self-test procedure.
+Ventilation Mode: During Ventilation mode, the patient is ventilated.
+
+GUI.108 - The transition from Ventilation to Settings shall occur if the operator wants to adjust ventilation settings.
+Settings Mode: During Settings mode, the operator can change the parameters of the ventilation and of the alarms.
+GUI.109 - The transition from Settings to Ventilation shall occur if the ventilator is ventilating and the operator has finished setting the parameters.
+GUI.110 - The transition from Settings to Menu shall occur if the ventilation is off and the operator has finished setting the parameters.
+
+3.1 Start-up Mode
+ID - Requirement / Rationale - Input Ref.
+GUI.11 - The GUI shall be able to test the communication with the Controller. FUN.5.1
+GUI.111 - The GUI shall be able to initialize itself with default configuration parameters if the controller is not ventilating.
+GUI.12 - If the Controller is not ventilating, when start-up is finished, the GUI shall be able to move to Start Mode. - FUN.4
+GUI.13 - If Controller is ventilating: Rationale: if the GUI starts and the Controller is already ventilating the GUI shall be able to display the information of the ventilation. This can happen e.g. if the GUI crashes while running ventilation and then it is restarted.
+GUI.13.1 - The GUI shall be able to update parameter settings with values read from the Controller.
+GUI.13.2 - The GUI shall be able to immediately move to the main ventilation screen (Ventilation Mode) after having loaded parameters from the Controller.
+GUI.13.3 - The ventilation is assumed to be running (the GUI is showing that ventilation is in progress).
+GUI.14 - The GUI shall be able to check system memory. FUN.5.1
+GUI.15 - The patient shall not be connected to the breathing circuit when the system is powered on and through start-up and self-test, a warning message shall be displayed at system startup. - FUN.5.3
+3.1.1 Start-up Configuration Parameters
+A set of default values for all parameters shall be provided and loaded from a configuration file on the machine when it is turned on. The default values are in Chapter 2.
+
+ID - Requirement / Rationale - Input Ref.
+
+PCV mode
+GUI.16 - Respiratory Rate (RR_PCV ) - PER.4
+GUI.17 - I:E Ratio (I:E_PCV ) - PER.5
+GUI.18 - Target inspiratory pressure (P_insp_PCV ) - PER.6
+GUI.19 - Inhale trigger sensitivity (ITS_PCV ) - PER.7
+
+PSV mode
+GUI.20 - Target inspiratory pressure (P_insp_PSV ) - PER.8
+GUI.21 - Inhale trigger sensitivity (ITS_PSV ) - PER.9
+GUI.22 - Expiratory trigger sensitivity (ETS) - PER.10
+GUI.23 - Apnea lag - PER.11
+
+Apnea backup
+GUI.24 - Respiratory Rate (RR_AP ) - PER.12
+GUI.25 - I:E Ratio (I:E_AP ) - PER.13
+GUI.26 - Target inspiratory pressure (P_insp AP ) - PER.14
+
+Alarm thresholds
+GUI.27 - Max P_insp. Rationale: Max P_insp is the maximum value for PAW before the alarm is generated - PER.15
+GUI.28 - Min P_insp. Rationale: Min P_insp is the minimum value for PAW before the alarm is generated - PER.16
+GUI.29 - Max V_tidal_exp - PER.19
+GUI.30 - Min V_tidal_exp - PER.20
+GUI.31 - Max V_tidal_insp - PER.19
+GUI.32 - Min V_tidal_insp - PER.20
+GUI.33 - Min V_E - PER.23
+GUI.34 - Max V_E - PER.22
+GUI.35 - Min RR - PER.24
+GUI.36 - Max RR - PER.25
+GUI.37 - Min PEEP - PER.18
+GUI.38 - Max PEEP - PER.17
+
+RM parameters
+GUI.39 - Pressure for the Recruitment Maneuver (PRM) - PER.3.1
+GUI.40 - Time for Recruitment Maneuver (timer RM) - PER.3.2
+
+Constant parameters
+GUI.41 - Maximum duration of Inspiratory Pause - FUN.29
+GUI.42 - Maximum duration of Expiratory Pause - FUN.28
+GUI.43 - The time between the end of the inspiratory phase and the start of the trigger window (triggerWindowDelay) = 0.7 sec. Rationale: This time window is required to allow the pressure going from P_insp to PEEP at the end of inspiration phase.
+GUI.44 - Maximum inspiratory time in PSV mode (max_insp_time_psv) = 7 sec. Rationale: it is required to avoid the patient staying infinitely in inspiration phase if flow drop is not detected (see CONT.33)
+
+3.2 Start Mode
+ID - Requirement / Rationale - Input Ref.
+GUI.45 - The user shall be able to resume the ventilation: - FUN.10
+GUI.45.1 - The GUI shall be able to move to “Menu”. - FUN.10
+GUI.45.2 - When resuming ventilation, the GUI shall be able to load setting parameters from the last known configuration saved by the system and stored in the system. This configuration is protected by a md5 file to guarantee that the settings are not corrupted. Before loading, the GUI checks the integrity of the file. - FUN.10
+GUI.45.3 - The user shall be able to select a new patient. The GUI shall move to “Self-test”. - FUN.10
+GUI.46 - The GUI requires a configuration file. Upon detecting that a configuration file does not exist, the application shall report the failure condition and terminate. Rationale: the ventilator requires a configuration file for initialization.
+GUI.46.1 - The GUI shall be able to load parameters from the default configuration file. - FUN.10
+GUI.46.2 - The user shall be able to enter user controlled parameters for ventilation and alarm at the beginning of the normal ventilation mode that is chosen. - FUN.10
+
+3.3 Menu Mode
+ID - Requirement / Rationale - Input Ref.
+GUI.47 - DELETED
+GUI.48 - The user shall be able to set the parameters for ventilation. If the user selects to change the settings, the GUI shall be able to move to the settings state in the ventilation mode only if self test has been passed if it is required (“new patient” was selected) - FUN.6
+GUI.49 - The user shall be able to proceed to ventilation only if the self test has been passed, if it is required (“new patient” was selected). - FUN.6
+GUI.49.1 - The GUI shall be able to start the ventilation as needed FUN.10
+
+3.4 Self-Test Mode
+In self-test mode the user performs some checks (see FUN.6 and its sub-requirements), if they
+pass, then the ventilator can continue to the next state.
+ID - Requirement / Rationale - Input Ref.
+GUI.50 - The user shall be able to start the self-test procedure from the self-test mode menu. - FUN.6
+GUI.50.1 - The user shall be able to interrupt the self-test procedure and return to the main screen of self-test mode. - FUN.6.2
+GUI.50.2 - If the self-test fails, the self-test procedure is interrupted and the GUI stops. - FUN.7
+GUI.50.3 - Only after the self-test procedure is successfully completed, the user shall be able to proceed to return to the Menu Mode. - FUN.6.2
+
+3.5 Ventilation Mode
+ID - Requirement / Rationale - Input Ref.
+GUI.51 - When the GUI enters the Ventilation mode, it shall be able to show the real time data coming from the controller. Rationale: this is the main screen containing all the data coming from the controller
+GUI.52 - The Ventilation mode shall implement the following modes (see Figure 3.1):
+1. Show Real Time Data Mode: display health parameters
+2. Settings Mode: update and display setting parameters
+3. Frozen view Mode: allow the user to freeze the screen and analyse waveforms in detailed
+4. Alarm Settings Mode: allow the user to perform a sequence of tests
+GUI.53 - The GUI shall be able to show the alarms when they are raised. - FUN.38
+GUI.54 - The user shall be able to snooze an alarms when they have been raised. Rationale: the user is able to snooze alarms when they are raised by the system
+GUI.55 - The user shall be able to lock the GUI; it will never lock itself automatically. Rationale: the user must lock the GUI to avoid mistakes when he has to clean the ventilator
+GUI.56 - The user shall be able to unlock the GUI, it will never unlock itself automatically. Rationale: the user must unlock the GUI when he has finished ventilator cleaning procedure
+GUI.57 - The user shall be able to enter the PIN to unlock the GUI. Rationale: a pin is necessary to unlock the GUI to be sure that the user wants to unlock it. Only holding a button is not enough because it can be done accidentally.
+GUI.58 - The user shall be able to start the inspiratory pause by pushing and holding a GUI button. The inspiratory pause shall end when the button is released or no later than 40 sec after initiation. - FUN.29
+GUI.59 - The user shall be able to start the expiratory pause by pushing and holding a GUI button. The expiratory pause shall end when the button is released or no later than 60 sec after initiation - FUN.28
+GUI.60 - Expiratory and inspiratory pause buttons shall both be disabled for 1 minute after the end of a pause. - FUN.28
+3.6 Show Real Time Data Mode
+ID - Requirement / Rationale - Input Ref.
+GUI.61 - The user shall be able to start ventilation in PCV or PSV by pressing a start button. Rationale: the user can choose the ventilation mode.
+GUI.61.1 - The user shall be able to change ventilation mode (PCV or PSV) even if the machine is already ventilating. - FUN.23
+GUI.61.2 - If ventilation is on, the system shall ask the user for confirmation/setting of PSV parameters (P_insp_PSV , ITS_PSV , ETS) and apnea parameters (apnea lag, P_insp AP and RR_AP ) when a PCV to PSV switch is initiated by the user. Until that has happened the PCV ventilation shall continue. - FUN.23
+GUI.61.3 - Before running the PSV mode for the first time for a given patient, the user shall set the Apnea backup settings. - FUN.27.2
+GUI.61.4 - The GUI shall ask for a confirmation when start mode is requested. - FUN.23.1
+GUI.62 - The user shall be able to stop ventilation by pressing a stop button if running. Rationale: if the user wants to stop the ventilation in PCV or PSV mode he can do it under his responsibility.
+GUI.62.1 - The GUI shall ask for a confirmation when a stop is requested.
+GUI.63 - The user shall be able to freeze the monitored waveforms for further inspection while ventilation continues. The GUI will move to the Frozen mode. Rationale: this functionality is required to analyse in detail the waveforms values.
+GUI.64 - The user shall be able to change the alarm settings. FUN.39
+GUI.65 - The user shall be able to change the settings of the usercontrolled ventilation parameters. - FUN.10
+
+The GUI shall be able to display the following information.
+ID - Requirement / Rationale - Input Ref.
+GUI.66 - The GUI shall be able to always show current active alarms
+Values measured and displayed by the ventilator for the patient
+GUI.67 - Respiratory rate (RR) of the patient measured by the ventilator, in units of breaths per minute (bpm). - FUN.43
+GUI.68 - Peak inspiratory pressure (Peak P_insp) measured for the most recent breath. - FUN.44
+GUI.69 - Positive end expiratory pressure (PEEP) measured (in cmH2O) for the most recent breath. - FUN.45
+GUI.70 - Tidal volume (V_tidal) measured for the most recent breath (in mL). - FUN.46
+GUI.71 - Minute volume (V_E) measured (in lpm) by the ventilator. - FUN.47
+GUI.72 - Fraction of inspired oxygen (FiO2). - FUN.48
+Indication in waveform
+GUI.73 - Instantaneous airway pressure (PAW), measured in cmH2O. - FUN.49
+GUI.74 - Instantaneous flow (V_E), measured in lpm. - FUN.50
+GUI.75 - Instantaneous tidal volume (V_tidal), measured in mL. - FUN.51
+Parameters shown to the user if in PCV mode
+GUI.76 - Ratio of Inspiratory time to Expiratory time (I:E) set by the user - FUN.52
+GUI.77 - Maximum Inspiratory pressure (Max P_insp_PCV ) - FUN.53
+Parameters shown to the user if in PSV mode
+GUI.78 - Maximum Inspiratory pressure (Max P_insp_PSV ) - FUN.53
+Parameters shown in RM mode
+GUI.79 - Remaining time for RM - FUN.58
+Indication of the machine status
+GUI.80 - Level of battery, i.e., the percentage of battery remaining. - FUN.54
+GUI.81 - Power source: if the ventilator is receiving power from the main supply, or if it is running on backup battery power. - FUN.55
+GUI.82 - Value of the temperature inside the ventilator unit is reported in ◦C. - FUN.56
+GUI.83 - Current status of the ventilator (running/stopped, PCV/PSV). - FUN.57
+
+3.7 Settings Mode
+ID - Requirement / Rationale - Input Ref.
+GUI.84 - The GUI shall display the current value of the parameters. Rationale: the user can see current value of ventilator parameters
+GUI.85 - The user shall be able to load parameters default value. Rationale: the user must always be able to load parameters default value.
+GUI.86 - The GUI shall store the last setting values in a file tobe read in case the ventilation is resumed (see resumeoperation in Start Mode).Rationale: In case of “Resume ventilation” the user wants to start ventilation with previous parameters.
+
+The following parameters take values indicated in Section 2.3.
+ID - Requirement / Rationale - Input Ref.
+GUI.87 - The GUI shall provide a menu page to insert and send the settings to the Controller. - SAV.50
+GUI.87.1 - Before sending the settings to the Controller, the GUI shall ask for confirmation to the user. After the confirmation the GUI shall transmit the parameters to the Controller and check that the controller accepts the values. The GUI shall read back the parameters from the Controller and check that they are equal to the values set by the user. Rationale: Asking confirmation to the user before sending the values will mitigate the risks of setting wrong values due to human errors. Checking the values with the get commands will confirm that the controller has the parameters set required by the user. - SAV.50
+GUI.88 - The GUI shall send the settings to the Controller using an ENTER / CONFIRM paradigm. - SAV.50
+Common Control Settings
+GUI.89 - Desired FiO2 - PER.2
+Control Settings in PCV
+GUI.90 - Respiratory Rate (RR_PCV ) - PER.4
+GUI.91 - I:E Ratio (I:E_PCV ) - PER.5
+GUI.92 - Target inspiratory pressure (P_insp_PCV ) - PER.6
+GUI.93 - Inhale trigger sensitivity (ITS_PCV ) - PER.7
+Control Settings in PSV
+GUI.94 - Target inspiratory pressure (P_insp_PSV ) - PER.8
+GUI.95 - Inhale trigger sensitivity (ITS_PSV ) - PER.9
+GUI.96 - Expiratory trigger sensitivity (ETS) - PER.10
+GUI.97 - Apnea lag - PER.11
+Apnea backup settings
+GUI.98 - Respiratory Rate (RR_AP ) - PER.12
+GUI.99 - I:E Ratio (I:E_AP ). Rationale: The value of the I:E Ratio when recovering from apnea lag is fixed. - PER.13
+GUI.100 - Target inspiratory pressure (P_insp AP ) - PER.14
+Control Settings in RM
+GUI.101 - Pressure for the Recruitment Maneuver (PRM) - PER.3.1
+GUI.102 - Timer RM (Time for Recruitment Maneuver). - PER.3.2
+3.8 Frozen Mode
+ID - Requirement / Rationale - Input Ref.
+GUI.103 - Frozen waveforms shall be shifted and re-scaled along both the vertical and the horizontal axes.
+GUI.104 - The user shall be able to quit the frozen mode.
+GUI.105 - The ventilation shall continue uninterrupted when Frozen Mode is enabled.
+3.9 Alarm settings Mode
+ID - Requirement / Rationale - Input Ref.
+GUI.106 - During Alarm setting mode, the user shall be able to change the boundaries for raising alarms (the ranges are listed in Section 2.3). - PER.15, PER.16, PER.18, PER.19, PER.20, PER.21, PER.22, PER.23, PER.24, PER.25, PER.17
+GUI.107 - The user shall be able to select the parameters they want to display in Show RealTime Data Mode and their order.
+
+
+Figure 3.2: Draft of GUI
+Figure 3.2 depicts a draft of a Graphical User Interface (GUI) for a mechanical lung ventilator. The following points describe the UML diagram of the draft GUI:
+
+1. Navigation Bar:
+   - The top section contains five action buttons: "Back," "Settings," "Special Actions," "Start PSV," and "Stop PCV," each button styled distinctly to indicate interactive elements.
+
+2. Graphical Display Area:
+   - Below the navigation bar, there are three graphs displayed in a vertical arrangement.
+   - The first graph is labeled "PAW (cmH2O)" and shows a square wave pattern representing airway pressure measurements.
+   - The second graph is labeled "Vtidal (ml)" and illustrates a waveform pattern that could signify tidal volume changes.
+   - The third graph is labeled "Flow (lpm)" and depicts a fluctuating line that appears to reflect airflow measurements.
+
+3. Monitoring Information:
+   - To the right of the graphs, there is a box containing real-time monitoring data such as "Battery [%]," "Power Source," "Measured RR [bpm]" for respiratory rate, "Max P insp [cmH2O]" for inspiratory pressure, "PEEP [cmH2O]" for positive end-expiratory pressure, "Vt insp [ml]" for inspiratory tidal volume, "Vt exp [ml]" for expiratory tidal volume, "MV [lpm]" for minute ventilation, and "FiO2 [%]" for fraction of inspired oxygen concentration.
+
+4. Alarm Interface:
+   - At the bottom, there is an "Silence alarm" button on the left, with a highlighted and textured appearance indicative of actionable control.
+   - Adjacent to the silence button, there is a banner labeled "Alarm messages" which likely serves as a notification area regarding the status or alerts pertaining to the ventilator system.
+
+Overall, the diagram of the GUI is cleanly laid out with a focus on displaying critical ventilation parameters and providing quick access to important functionalities with clear visual cues for navigation and alarm management in the clinical setting.

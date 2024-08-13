@@ -1,0 +1,38 @@
+1. **Ambiguities or Unclear Statements in the Controller Requirements Section as a Whole:**
+
+- The term "error" used in the state transitions is vague. It does not specify what types of errors would cause these transitions, potentially leading to misunderstandings about the system's behavior in error conditions.
+- The term "apneaLag" is mentioned without a clear definition or explanation of how it is detected or its threshold values.
+- The description of the "FailSafe" state lacks detail on what specific actions are taken to ensure patient safety beyond setting valve states.
+
+2. **Ambiguities or Unclear Statements within the Controller Requirements Table:**
+
+- CONT.1.6 and CONT.38 mention "in valve close and out valve open" without specifying the conditions or thresholds for these actions.
+- CONT.5 and CONT.6 have conflicting rationales regarding the starting mode of ventilation, which could lead to confusion about the default starting mode.
+- CONT.9's rationale mentions a condition ("the patient is not able to breathe") that seems to contradict the requirement for PSV mode, where patients must initiate every breath.
+- CONT.37 mentions the need to set "apnea backup PCV setting" without specifying where or how this setting is configured.
+
+3. **Ambiguities or Unclear Statements within the Start-up Mode Subsection:**
+
+- The description of the start-up mode activities (CONT.12 to CONT.16) lacks specificity on the expected outcomes or thresholds for passing these checks, such as what constitutes a successful communication check with sensors, valves, and the GUI.
+
+4. **Ambiguities or Unclear Statements within the SelfTest Mode Subsection:**
+
+- CONT.17 and CONT.18 seem redundant, both stating that the controller allows or performs the self-test. It's unclear if these are separate actions or a repetition.
+- The criteria for failing the self-test (CONT.19) are not specified, leaving ambiguity about what conditions would prevent proceeding to ventilation.
+
+5. **Ambiguities or Unclear Statements within the PCV Mode Subsection:**
+
+- CONT.20 mentions "the most appropriate procedure for COVID-19 patients" without providing evidence or references to support this claim, which could be seen as subjective.
+- The formula for calculating the Inspiratory time (CONT.22) could be clearer, especially regarding the units of measurement and how these calculations relate to real-time operation.
+
+6. **Ambiguities or Unclear Statements within the PSV Mode Subsection:**
+
+- CONT.32's mention of a "suitable timeout" is vague, as it does not specify the exact duration or criteria for this timeout.
+- The requirement for the patient to initiate every breath (CONT.29) contrasts with CONT.37, which allows for automatic switching to PCV mode, potentially confusing the mode's operational conditions.
+
+7. **Ambiguities or Unclear Statements within the Requirements Common to all Modes Subsection:**
+
+- CONT.39.3's reference to "P_insp AP if current model is PCV from apnea backup" is unclear, particularly the term "P_insp AP," which has not been defined previously.
+- CONT.43's note "Not available in North America" raises questions about the applicability and implementation of the Recruitment Maneuver (RM) in different regions without providing a rationale or alternative for those regions.
+
+Overall, while the document attempts to detail the controller requirements for a mechanical lung ventilator, several ambiguities and unclear statements could lead to potential misunderstandings or misinterpretations of the requirements.

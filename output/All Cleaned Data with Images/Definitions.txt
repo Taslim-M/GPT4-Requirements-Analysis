@@ -1,0 +1,51 @@
+Definitions and Abbreviations
+Definitions
+Term Definition
+apnea backup ventilation - Switching from PSV to PCV mode in case of apnea lag
+apnea lag (or apnea trigger window) - Duration of apnea that triggers a switch from PSV to PCV mode
+control panel - A touchscreen display for setting parameters and operation monitoring of the ventilator
+default configuration file - File which contains setting parameters with default values
+pressure drop - Intensity of pressure drop. If the pressure drops, the drop is positive. The bigger is the drop, the more sudden is the drop.
+internal pressure - The internal pressure in the circuit
+in valve - The inspiratory control valve allows the mix of air and oxygen to enter the inspiratory limb of the patient’s circuit. This valve can have state closed when the pressure is set to 0, and state open when the pressure is set to P_insp
+last_inspiration_time - Duration of the patient inspiration in the current breath cycle in PSV mode.
+max_exp_pause - The maximum time duration of an Expiratory Pause
+max_ins_pause - The maximum time duration of an Inspiratory Pause
+max_insp_time_psv - A timeout for the inspiration phase in PSV mode in case an expiration is not spontaneously triggered by the patient. It shall be 7 sec.
+max_rm_time - The maximum time duration of a Recruitment Maneuver
+min_exp_time_psv - A timeout for the expiration phase in PSV mode in case an inspiration breath is not spontaneously triggered by the patient and the apnea lag is not over.
+out valve - The valve that controls the expiratory flow. The valve can be closed or open.
+pressure control loop - The sw procedure that determines the output control signal to inspiratory valve to maintain the Airway Pressure (PAW) at a set target pressure
+stored configuration file - File which contains setting parameters with last changes made by the user
+trigger window - Time interval within which a spontaneous breathing can be detected (in PCV mode). The trigger window can start 0.7 sec after the end of the inspiration phase.
+waveform - An image that represents a quantity that changes over time, e.g., inspiratory pressure. It shows the changes in amplitude over a certain amount of time. The amplitude of the signal is measured on the vertical axis while time is measured on the horizontal axis
+
+Abbreviations
+Term Definition
+ETS (Expiratory Trigger Sensitivity) - percentage of peak flow at which the ventilator triggers expiration
+FiO2 (Fraction of inspired Oxygen) - the relative oxygen concentration of the air in the inspiratory limb of the circuit
+I:E_AP - Ratio of Inspiratory time to Expiratory time in apnea backup mode
+I:E_PCV - Ratio of Inspiratory time to Expiratory time in PCV mode
+IS (Inspiratory Pressure) - airway pressure during an inspiratory or inflation phase
+ITS_PCV (Inhale Trigger Sensitivity) - the drop-in pressure that triggers a new inspiration
+in PCV mode
+ITS_PSV (Inhale Trigger Sensitivity) - the drop-in pressure that triggers a new inspiration
+in PSV mode
+GUI - A software component controlling a touchscreen display for the user functionalities of setting the parameters and monitoring the operation of the ventilator
+PAW (Airway Pressure) - the pressure measured in the entrance to the patient’s airway
+PCV (Pressure Controlled Ventilation) - inflation type that acts to generate a constant inspiratory pressure at a set level, after a set rise time
+Peak P_insp_PCV (Peak inspiratory Pressure in PCV mode) - highest airway pressure reached during the previous respiratory cycle in PCV mode
+Peak P_insp_PSV (Peak inspiratory Pressure in PSV mode) - highest airway pressure reached during the previous respiratory cycle in PSV mode
+PEEP (Positive End Expiratory Pressure) - the measured respiratory pressure at the end
+of an expiratory phase
+P_insp_AP (Target Inspiratory Pressure for apnea backup) - the set pressure to supply the patient during the inspiratory phase of the breathing cycle in case of apnea backup.
+P_insp_PCV (Target Inspiratory Pressure in PCV mode): the set pressure to supply the patient during the inspiratory phase of the breathing cycle in PCV mode.
+P_insp_PSV (Target Inspiratory Pressure in PSV modes): the set pressure to supply the patient during the inspiratory phase of the breathing cycle in PSV modes.
+PSV - Pressure Support Ventilation
+PRM - Pressure for the Recruitment Maneuver
+RM - Recruitment Maneuver
+RR_AP (Respiratory Rate for apnea backup) - the number of breaths taken by the patient per minute in apnea backup mode
+RR_PCV (Respiratory Rate in PCV mode) - the number of breaths taken by the patient per minute in PCV mode
+V_tidal (Tidal Volume) - the volume of air delivered by the ventilator to the lungs for each breath.
+V_E (Minute Volume): (or flux) volume of gas either passing to or leaving the lung during inspiratory or inflation phases, or expiratory phase, respectively, expressed
+as a volume per minute. The Minute Volume is equal to the tidal volume multiplied by the respiratory rate.

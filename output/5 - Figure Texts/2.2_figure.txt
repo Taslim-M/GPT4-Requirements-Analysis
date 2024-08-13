@@ -1,0 +1,15 @@
+Figure 2.2: High level view of ventilator sensors
+
+- **Air and Oxygen Supply**: The diagram shows separate inputs for air and oxygen that feed into a gas blender (GB).
+- **Gas Blender**: The GB is responsible for mixing air and oxygen. It is equipped with a pressure sensor (PS) to monitor the pressure of the gas mixture.
+- **IN Valve**: The gas mixture then passes through the IN valve, which regulates the entry of the gas into the ventilator.
+- **Sensors**: 
+  - The flow sensor FI1 measures the unidirectional flow of gas to the patient.
+  - The oxygen concentration sensor (OS) measures the oxygen level in the gas being delivered to the patient.
+  - The pressure sensor PS ins measures the pressure in the entrance to the patient.
+- **Ventilator Representation**: The ventilator is depicted as a central box from which the gas is delivered to the patient (indicated by the silhouette of a human upper body and respiratory system).
+- **Flow Path to Patient**: After the ventilator, the flow sensor FI2 measures the bidirectional flow of gas between the ventilator and the patient.
+- **Exhalation**: Following the passage through the patient's system, the gas is expelled through the OUT valve. The pressure sensor PS exp measures the pressure in the expiratory line.
+- **PEEP Valve**: The Positive End Expiratory Pressure (PEEP) valve ensures a minimum level of pressure is maintained in the lungs after exhalation.
+- **GUI**: A Graphic User Interface (GUI) connected to the ventilator allows for monitoring and control of the ventilation process. This interface includes a switch (activated by alternating current AC or a battery), and has an LED indicator.
+- **Legends**: An additional legend box provides abbreviations and their meanings: GB stands for gas blender with pressure sensor (PS), PS for pressure sensor, OS for oxygen concentration sensor, FI1 for unidirectional flow sensor, FI2 for bidirectional flow sensor, PS ins for pressure sensor at the entrance to the patient, and PS exp for pressure sensor on the expiratory line.

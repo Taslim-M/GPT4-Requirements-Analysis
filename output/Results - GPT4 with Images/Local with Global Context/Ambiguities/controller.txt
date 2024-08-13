@@ -1,0 +1,37 @@
+1. **Ambiguities or unclear statements in the Controller Requirements section as a whole:**
+
+- The term "ventilation off" is used in different contexts (CONT.1.3 and the description of the VentilationOff state) without a clear definition, which could lead to confusion about whether it is a state or an action.
+- The transition events between states are not fully detailed. For example, "startPCV" and "startPSV" events are mentioned without specifying the conditions under which these events are triggered (beyond a GUI command).
+- The term "Fail safe" state is mentioned (CONT.1.6, CONT.1.7), but there is no detailed description of what this state entails beyond the valve positions. The conditions triggering this state are also not exhaustively listed.
+
+2. **Ambiguities or unclear statements within the Controller requirements table:**
+
+- CONT.1.2 and CONT.1.3 have similar descriptions but are listed as separate modes, which could confuse the reader about the differences between these modes.
+- CONT.5 and CONT.6 have contradictory rationales regarding the default starting ventilation mode, which could lead to confusion about the correct behavior.
+- CONT.6 mentions "the ventilation starts in PSV mode" as a rationale, which contradicts the requirement statement itself about transitioning to PCV mode.
+
+3. **Ambiguities or unclear statements within the Start-up Mode subsection:**
+
+- CONT.15 and CONT.16 mention transitioning to fail-safe mode after a fixed number of retries without specifying the actions to be taken before deciding to retry or the time intervals between retries.
+- The term "default configuration parameters" in CONT.12 is vague without a reference to what these parameters might include or where they are defined.
+
+4. **Ambiguities or unclear statements within the SelfTest Mode subsection:**
+
+- CONT.17 and CONT.18 seem to duplicate the requirement for the controller to allow and to perform the self-test, which could be interpreted as redundant or confusing regarding the division of responsibilities between the controller and the GUI.
+
+5. **Ambiguities or unclear statements within the PCV Mode subsection:**
+
+- CONT.22 and CONT.25 provide formulas for calculating inspiratory and expiratory times but do not specify the units of measurement for time (seconds, minutes, etc.), which could lead to misinterpretation.
+- CONT.23 and CONT.24 mention initiating an Inspiratory Pause and a Recruitment Maneuver without specifying the conditions under which one is chosen over the other.
+
+6. **Ambiguities or unclear statements within the PSV Mode subsection:**
+
+- CONT.32 mentions a "suitable timeout" without specifying the exact duration, which could lead to variability in implementation.
+- CONT.36.3's requirement for "min_exp_time_psv" provides a range but does not clarify how the exact value within this range is determined.
+
+7. **Ambiguities or unclear statements within the Requirements Common to all Modes subsection:**
+
+- CONT.43 mentions that the Recruitment Maneuver is "Not available in North America" without providing a rationale or specifying how this regional difference is to be implemented or enforced.
+- CONT.44 and CONT.45 mention "PAW" and "ITS" without defining these acronyms or how these values are monitored and acted upon.
+
+Overall, the Controller Requirements section contains several ambiguities and unclear statements that could lead to misinterpretations and inconsistencies in the implementation of the mechanical lung ventilator's software. Clarifications and additional details would be beneficial to ensure a clear and unambiguous understanding of the requirements.

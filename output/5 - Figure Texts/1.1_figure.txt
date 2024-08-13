@@ -1,0 +1,17 @@
+Beginning with Figure 1.1: The high-level software architecture, the UML diagram depicts the structure of a software system for a mechanical lung ventilator. The architecture is represented with the following components and interactions:
+
+1. Sensors/Actuators: This dashed capsule represents the hardware components that interact directly with the physical environment. The sensors collect data from the ventilator system, and the actuators carry out actions based on control signals.
+
+2. Controller: Illustrated by a solid rectangle, the controller is the central processing unit. It receives input from the sensors/actuators and processes it according to the software's logic to make decisions.
+
+3. Bidirectional Arrow between Sensors/Actuators and Controller: This double-headed arrow illustrates the interactive relationship between the Sensors/Actuators and Controller. In this case, it shows that the sensors/actuators receive and send data to the controller for processing.
+
+4. GUI (Graphical User Interface): Another solid rectangle represents the user interface through which a user interacts with the ventilator system. The GUI presents information to the user and captures user input.
+
+5. Serial Communication: An open circle denotes the method of communication between the controller and the GUI, indicating that they communicate through serial transmission.
+
+6. User: The stick figure symbolizes the end user or operator of the mechanical lung ventilator. This person uses the GUI to monitor the system, make inputs, and receive feedback.
+
+7. Bidirectional Arrow between GUI and User: This double-headed arrow illustrates the interactive relationship between the user and the GUI. The user both receives information from and provides input to the GUI.
+
+Overall, the diagram provides a simplified view of the key software components within a mechanical lung ventilator system and the basic interactions between them.

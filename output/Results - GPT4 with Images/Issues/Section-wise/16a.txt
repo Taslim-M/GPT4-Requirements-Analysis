@@ -1,0 +1,13 @@
+The document indeed specifies that the system shall measure and display various parameters such as Peak Inspiratory Pressure (Peak P_insp), Tidal Volume (V_tidal), Airway Pressure (PAW), among others. However, the document does not explicitly detail the methodologies or algorithms used to calculate these parameters. This omission is not uncommon in high-level requirements documents, where the focus is on what the system must do rather than how it must do it. 
+
+The calculation of these parameters typically involves sensor data and specific algorithms tailored to the mechanical and software design of the ventilator. For instance:
+
+- **Peak Inspiratory Pressure (Peak P_insp)**: This is usually determined by measuring the highest pressure reached during the inspiratory phase of a breath cycle. Pressure sensors in the ventilator circuit, specifically at the entrance to the patient's airway (as indicated by the presence of a pressure sensor PS ins in the document), would be used to capture pressure data throughout the breath cycle. The peak value recorded during inspiration would be identified as the Peak P_insp.
+
+- **Tidal Volume (V_tidal)**: The volume of air delivered to the patient in each breath can be calculated using flow sensors (e.g., FI1 and FI2 as mentioned in the document) that measure the flow rate of gas into and out of the patient's lungs. By integrating the flow rate over the time of inspiration, the total volume of gas delivered (V_tidal) can be calculated.
+
+- **Airway Pressure (PAW)**: This is measured directly using pressure sensors located at the patient's airway entrance (PS ins). The document mentions the measurement and display of instantaneous airway pressure (PAW), which suggests real-time monitoring of pressure values.
+
+While the document does not provide the exact calculation methods, it does specify the use of sensors and interfaces that would facilitate these measurements. For example, the interface between hardware and controller sections (INT.49 to INT.58) lists various sensors for measuring flow, oxygen concentration, pressure, and other parameters. The algorithms to process sensor data into meaningful clinical parameters like Peak P_insp, V_tidal, and PAW would be part of the software development process, adhering to the functional requirements specified in the document.
+
+In summary, while the document does not detail the calculation methods for these parameters, it outlines the necessary hardware components and system capabilities to measure and display them, leaving the specific implementation details to the software development phase.

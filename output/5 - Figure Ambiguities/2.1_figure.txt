@@ -1,0 +1,17 @@
+The description of the high-level operation diagram for a mechanical lung ventilator contains several ambiguities that could lead to confusion or misinterpretation. Here are some of the ambiguities identified:
+
+1. **Looping Self-Test**: The description mentions a looping arrow labeled "run selftest" if the self-test does not pass, suggesting repetition. However, it does not specify any condition or limit for exiting this loop if the self-test continues to fail. This could imply an infinite loop without a clear exit strategy for unrecoverable errors.
+
+2. **Decision Criteria for Ventilation Modes**: While it mentions that the ventilator can move to "Ventilation" by starting PCV or PSV, it does not clarify the criteria or conditions under which one mode is chosen over the other. This lack of detail could lead to ambiguity in understanding how the system decides between PCV and PSV.
+
+3. **Mode Switching During Ventilation**: The description implies that the system can switch between PCV and PSV modes during ventilation but does not detail the conditions or triggers for such a switch. This raises questions about how and why the ventilator would transition between modes.
+
+4. **Error Handling in "FailSafe" Stage**: While an "error" event during "Ventilation" leads to a "FailSafe" stage, the description does not elaborate on what actions are taken in the "FailSafe" stage or how the system recovers from it. The term "FailSafe" suggests a safety mechanism, but without details, it's unclear what this entails.
+
+5. **Power Off Transitions**: The description mentions two explicit "powerOff" transitions but does not clarify if these are the only conditions under which the system can be powered off. It also does not specify if there are any prerequisites or conditions that must be met before powering off the system from these stages.
+
+6. **Ambiguity in "StandBy" Stage**: The description allows for a transition to "StandBy" both after a successful self-test for a new patient and directly if the patient is not new, but it does not specify what actions or conditions are associated with the "StandBy" stage. This leaves open questions about what the ventilator is doing in this stage and how it transitions out of it.
+
+7. **End Indicator**: The description mentions an end indicator (a circle with a concentric dark circle) but does not explicitly state what signifies the end of the process. Is it the powering off of the system, or are there other conditions that signify the process has concluded?
+
+Addressing these ambiguities would require additional information or clarification to ensure the operation diagram is accurately understood and implemented.

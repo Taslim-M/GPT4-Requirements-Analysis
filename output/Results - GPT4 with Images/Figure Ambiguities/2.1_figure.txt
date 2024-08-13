@@ -1,0 +1,17 @@
+The description of the high-level operation diagram for a mechanical lung ventilator contains several ambiguities that could lead to confusion or misinterpretation. Here are some identified ambiguities:
+
+1. **Decision Point Ambiguity**: The description mentions a decision point with the condition `<new patient?>` but does not explicitly state what happens if the self-test fails after selecting 'yes'. It's unclear whether there's an error handling mechanism or a different path for a failed self-test.
+
+2. **Transition to StandBy Stage**: It's mentioned that the system transitions to the "StandBy" stage both after a successful self-test (when a new patient is detected) and directly if the answer is 'no' at the `<new patient?>` decision point. However, it's not clear if the conditions or the system's state in "StandBy" are different based on these two paths.
+
+3. **Ventilation Mode Switching**: While it's stated that the system can switch between PCV and PSV modes during ventilation, the description lacks detail on the conditions or triggers for these transitions. Are these switches manual (user-initiated) or automatic based on certain criteria?
+
+4. **Looping Back in Ventilation Modes**: The description mentions that both "PCV" and "PSV" can loop back on themselves, implying continuous operation. However, it doesn't specify what triggers the loop to continue or stop, other than the "stopVentilation" transition.
+
+5. **Error Handling in Ventilation Stage**: The description indicates an "error" event leads to a "FailSafe" stage, but it doesn't elaborate on what types of errors trigger this transition or what the "FailSafe" stage entails for the ventilator's operation.
+
+6. **Power Off Transitions**: There are two explicit "powerOff" transitions mentioned, but the description ambiguously states they are from "any of the stages." It's specifically mentioned for "FailSafe" and at the end of "Ventilation," which might imply that "powerOff" is not available from other stages like "StandBy" or after a failed self-test, yet this is not clearly defined.
+
+7. **End Indicator**: The description concludes with a mention of an end indicator (a circle with a concentric dark circle), but it does not specify what conditions or stages lead to the process's end. Is the end indicator only reached after powering off, or are there other conditions for the process to be considered complete?
+
+Addressing these ambiguities would require additional details or clarifications to ensure the diagram's operation is fully understood and accurately implemented.

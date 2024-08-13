@@ -1,0 +1,7 @@
+Yes, in a normal case, the start-up of the controller occurs before that of the GUI. This is evident from the requirements specified for both the controller and the GUI. 
+
+For the controller, the transition from the "Start-up" state to the "SelfTest" state occurs once start-up has completed (`start-up ended`), as indicated in the Controller Requirements section under the description of the "Start-up State". This implies that the controller initiates its start-up sequence immediately upon a `powerOn` event and completes it before moving on to the self-test procedures.
+
+For the GUI, the transition from "Start-up Mode" to either "Start" or "Ventilation" mode occurs after the start-up parameter validation and initialization have been completed, as described in the GUI Requirements section. Specifically, GUI.2 and GUI.3 requirements detail that the GUI checks whether the controller is already running in ventilation mode to decide the next state. This indicates that the GUI's start-up sequence is designed to recognize the operational state of the controller, which would already be in a post-start-up state.
+
+Therefore, the controller's start-up process is initiated and concluded before the GUI's start-up process, ensuring that the controller is ready and operational for the GUI to check its status and proceed accordingly.

@@ -1,0 +1,34 @@
+1. **Ambiguities or Unclear Statements in the GUI Requirements Section as a Whole:**
+   - The document does not specify how the GUI handles transitions between modes in case of errors or exceptions, other than the self-test failure. This could lead to ambiguities in how the system should behave under error conditions.
+   - The term "ventilation mode" is used both as a specific mode (GUI.1.5) and as a general term referring to the operational state of the ventilator (e.g., GUI.45.3, GUI.48). This dual use could cause confusion.
+
+2. **Ambiguities or Unclear Statements within the GUI Requirements Table:**
+   - GUI.5 and GUI.45.5 both mention loading parameters from the default configuration file but do not specify what happens if the default configuration file is missing or corrupted.
+   - GUI.10 implies the GUI exits upon self-test failure, but it's unclear what "exits" means in this context (e.g., does the software shut down, or does it display an error message?).
+
+3. **Ambiguities or Unclear Statements within the Start-up Mode Subsection:**
+   - GUI.13 lacks a clear requirement statement. It introduces a rationale without a corresponding requirement, leaving it ambiguous what the GUI should do in the scenario described.
+
+4. **Ambiguities or Unclear Statements within the Start Mode Subsection:**
+   - GUI.45.2 mentions checking the integrity of the configuration file with an md5 file but does not specify what actions are taken if the integrity check fails.
+
+5. **Ambiguities or Unclear Statements within the Menu Mode Subsection:**
+   - The requirements in this subsection are relatively clear, but GUI.48 and GUI.49 could be more explicit about the conditions under which the self-test is required.
+
+6. **Ambiguities or Unclear Statements within the Self-Test Mode Subsection:**
+   - GUI.50.2 states the GUI stops if the self-test fails, which is vague. Does the software close, or does it prevent further actions until the issue is resolved?
+
+7. **Ambiguities or Unclear Statements within the Ventilation Mode Subsection:**
+   - GUI.52 lists modes within the Ventilation mode but does not clearly define how the user transitions between these sub-modes.
+
+8. **Ambiguities or Unclear Statements within the Show Real Time Data Mode Subsection:**
+   - GUI.61.2 and GUI.61.3 mention setting and confirming parameters for a mode switch but do not detail the user interface process for these actions.
+
+9. **Ambiguities or Unclear Statements within the Settings Mode Subsection:**
+   - GUI.87.1 describes a process for confirming and checking parameter values sent to the Controller but does not specify what happens if the check fails (e.g., values do not match).
+
+10. **Ambiguities or Unclear Statements within the Frozen Mode Subsection:**
+    - GUI.103 mentions shifting and re-scaling frozen waveforms but does not specify how the user controls these actions or what the limits are.
+
+11. **Ambiguities or Unclear Statements within the Alarm Settings Mode Subsection:**
+    - GUI.106 allows the user to change alarm boundaries but does not specify how these changes are confirmed or saved, nor does it describe what feedback the user receives upon making a change.

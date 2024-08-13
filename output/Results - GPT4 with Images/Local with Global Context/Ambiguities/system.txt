@@ -1,0 +1,33 @@
+1. **Ambiguities or Unclear Statements in the System Requirements Section:**
+
+- The description of the "Fail-safe mode" in FUN.7 is vague. It mentions "in valve closed and out valve open" but does not specify the conditions under which the system enters this mode, nor does it detail the expected behavior of the ventilator in this state beyond valve positions.
+- FUN.8.1's description of how the cumulative hours of operation are indicated is ambiguous. It mentions "either 1) automatically; or 2) by operator action" without clarifying the conditions or methods for each option.
+- FUN.10.3 allows for the skipping or optional rerun of self-test procedures but does not specify how this impacts system safety or functionality.
+- FUN.18 mentions a leak compensation feature that is disabled by default but does not specify how the system detects leaks or the criteria for enabling this feature.
+- FUN.22 mentions that the Recruitment Maneuver (RM) is not allowed in North America without explaining the reason or how the system ensures compliance with this restriction.
+
+2. **Ambiguities or Unclear Statements in the Functional Requirements Table:**
+
+- FUN.5.2 does not specify the criteria for determining a successful or failed initialization process.
+- FUN.6.3's requirement for the FI2 flow meter to be "connected in the right direction and is calibrated" is vague regarding the calibration process and criteria for the correct direction.
+- FUN.8.4 and FUN.8.5 have conflicting statements about who can erase the alarm system log, with one stating it should not lose contents unless erased by authorized personnel and the other stating the healthcare professional operator cannot erase it.
+
+3. **Ambiguities or Unclear Statements in the Measured and Displayed Parameters Table:**
+
+- FUN.48.1's process for adjusting the FiO2 value until the desired level is achieved could benefit from more detail on the adjustment mechanism and how the +-3% alarm limits are derived and applied.
+
+4. **Ambiguities or Unclear Statements in the Values and Ranges Sub-section:**
+
+- PER.3.1 and PER.3.2 provide default values and ranges for the Recruitment Maneuver but do not specify how these settings are enforced or modified, especially considering the maneuver's restriction in North America.
+- The "Step Size: H2O continuous" in PER.1 is unclear. It seems to be a typo or formatting error.
+
+5. **Ambiguities or Unclear Statements in the Sensors and Interfaces Sub-section:**
+
+- The description of the sensor layout in Figure 2.2 is clear in terms of placement but does not detail the communication protocol or data format used between sensors and the controller, which could be critical for ensuring accurate and reliable sensor readings.
+
+6. **Ambiguities or Unclear Statements in the Alarm Requirements:**
+
+- SAV.14's condition for generating an alarm due to leakage is specific, but it does not detail how the system detects the leakage or the steps the system takes once the alarm is triggered.
+- SAV.24 and SAV.24.1 mention a PEEP alarm for exceeding the user-set desired pressure but do not specify the response expected from the ventilator upon such an alarm condition.
+
+Overall, while the document provides a comprehensive overview of the system requirements for a Mechanical Lung Ventilator, several areas could benefit from further clarification to avoid potential misunderstandings or ambiguities, especially regarding system behavior under specific conditions and the operational details of features like the Recruitment Maneuver and leak compensation.

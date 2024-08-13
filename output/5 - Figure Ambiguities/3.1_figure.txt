@@ -1,0 +1,17 @@
+The description of the GUI state machine contains several ambiguities and areas that could lead to confusion or misinterpretation. Here are some of the ambiguities identified:
+
+1. **Ambiguous Transition Conditions**: The description mentions transitions based on conditions like "[ventilation=off]" and "[ventilation=on]" without specifying how or when these conditions are evaluated or changed. It's unclear if these conditions are set by user actions, system events, or both.
+
+2. **Multiple Events Leading to the Same State**: For the transition from the "Start" state, it's mentioned that "To the 'SelfTest' state on the occurrence of either 'new Patient'". This phrasing is ambiguous because it suggests that there might be another event besides "new Patient" that triggers the transition, but no other event is specified.
+
+3. **Ambiguous Event Handling in "SelfTest" State**: The description states that the "SelfTest" state stays in the same state if the event 'abortTest' or 'runSelfTest' occurs. It's ambiguous how these events affect the state if it simply remains in "SelfTest". Does the state internally change or reset, or is there no effect at all?
+
+4. **Guard Conditions in "Settings" State**: The transitions from the "Settings" state back to the "Menu" or to the "Ventilation" state are based on the same event "save/goBack" but with different guard conditions. It's ambiguous how the system determines which transition to follow if the event occurs. Specifically, the mechanism or timing for evaluating the "[ventilation=off]" and "[ventilation=on]" conditions is not clear.
+
+5. **General Lack of Event Definitions**: The description does not provide definitions or contexts for events like "startPCV", "startPSV", "set param", or "stopVentilation". Without understanding what these events represent or how they are triggered, interpreting the state transitions accurately is challenging.
+
+6. **Final State Transitions**: While it's mentioned that all states besides the initial, final, and Settings states have a transition to the final state when the "powerOff" event occurs, this is somewhat confusing because the "Settings" state is also mentioned to transition to the final state on "powerOff". This inconsistency needs clarification.
+
+7. **Initial State Transition**: The transition from the initial pseudo-state to the "Start-up" state is triggered by the "powerOn" event. However, it's not clear how or when the "powerOn" event is generated, especially in the context of a GUI state machine. Is it a physical button press, a software command, or something else?
+
+Addressing these ambiguities would require additional information or clarification to ensure the state machine's behavior is fully understood and can be implemented correctly.

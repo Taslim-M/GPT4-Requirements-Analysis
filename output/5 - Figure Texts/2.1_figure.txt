@@ -1,0 +1,17 @@
+Figure 2.1 illustrates the high-level operation diagram for a mechanical lung ventilator, presented as a UML activity diagram. Below is a descriptive prompt that details the diagram:
+
+- The process begins with the "Start-up" stage and immediately moves to a decision point with the condition `<new patient?>`.
+    - If the answer is 'yes', the ventilator performs a "SelfTest".
+      - If the self-test is successful (denoted by "selftestPassed"), the system transitions to the "StandBy" stage.
+    - If the answer is 'no', the system directly transitions to "StandBy" stage.
+- From "StandBy," the ventilator can move to "Ventilation" by either starting PCV (Pressure-Controlled Ventilation) or PSV (Pressure Support Ventilation), as indicated by "startPCV" or "startPSV".
+- The "Ventilation" stage encapsulates two modes of operation:
+  - "PCV" can loop back on itself or transition to "PSV". The diagram implies that the system can switch between these modes during ventilation.
+  - "PSV" can likewise loop back to itself, indicating continuous pressure support ventilation until another action is taken.
+- If ventilation is to be stopped, the "stopVentilation" transition leads back to "StandBy".
+- An "error" event during "Ventilation" leads the diagram to a "FailSafe" stage, which indicates a safety mechanism to handle malfunction scenarios.
+- The diagram has two explicit "powerOff" transitions:
+  - One from the "FailSafe" stage, illustrating that the system can be turned off after a failure from any of the stages.
+  - The other at the end of the "Ventilation" phase, showing that the system can be turned off after use from any of the stages.
+
+The various transitions between stages are represented by arrows, and the entire process flow is encapsulated between a start (a filled circle) and an end (a circle with a concentric dark circle) indicator.

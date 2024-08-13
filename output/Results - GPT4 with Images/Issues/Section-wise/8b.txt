@@ -1,0 +1,13 @@
+Based on the provided Software Requirements Specification (SRS) for a Mechanical Lung Ventilator, the GUI (Graphical User Interface) and the controller have distinct roles and operational states, which are defined in their respective state machines. The GUI is responsible for user interactions, settings, and displaying information, while the controller manages the actual ventilation modes and transitions based on the operational state of the ventilator and inputs from the GUI.
+
+### Can GUI be faster than the controller?
+
+The question of whether the GUI can be "faster" than the controller is somewhat misaligned with the nature of their interaction. The GUI and the controller operate asynchronously; the GUI sends commands to the controller and displays information based on the controller's state and data. The "speed" isn't directly comparable because they perform different functions. However, the GUI can quickly respond to user inputs and update displays, while the controller processes those inputs and manages the ventilation states, which involves physical processes that might take more time to execute.
+
+### Can GUI be in the state Start before the controller was in the state SelfTest?
+
+According to the SRS, the GUI transitions to the "Start" state after the "Start-up" state once the configurations have been loaded and the controller is not running in ventilation (GUI.3). The controller, on the other hand, transitions from the "Start-up" state to the "SelfTest" state once start-up has completed (CONT.3). 
+
+Given these requirements, the GUI can indeed be in the "Start" state before the controller transitions to the "SelfTest" state. This is because the GUI's transition to "Start" is based on the completion of its start-up procedures and the ventilation status, not directly on the controller's transition to "SelfTest". The GUI's transition to "Start" is contingent upon the controller not being in a ventilation mode, which is a condition that can be met independently of the controller's specific state transition to "SelfTest".
+
+In summary, the GUI's transition to the "Start" state is not directly dependent on the controller's state but rather on the conditions that are met during the GUI's start-up process and the operational status of the controller (i.e., whether it is already in a ventilation mode or not).

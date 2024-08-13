@@ -1,0 +1,47 @@
+Based on the detailed Software Requirements Specification provided for the Mechanical Lung Ventilator, let's address the issues raised:
+
+### Issue #2: Setting Ventilation Parameters with Patient Connected
+According to FUN10.5, it is indeed stated that in Standby Mode, ventilation is off, and it is possible to adjust all user-controlled parameters for ventilation and alarms before connecting to the patient and starting patient ventilation. However, the GUI and Controller state machines (Figures 3.1 and 4.1) and their descriptions do not explicitly forbid parameter adjustments with the patient connected, especially in Settings Mode (GUI.7, GUI.8, CONT.8, CONT.10). The system transitions to Settings Mode to adjust parameters, which can occur during ventilation (GUI.108, CONT.9, CONT.10). Therefore, while FUN10.5 suggests parameter adjustments should be made before patient connection, the system's design accommodates adjustments during operation, ensuring safety and flexibility in clinical scenarios.
+
+### Issue #3: "Start Ventilation" Availability
+The "start ventilation" function is available even if the patient is not connected, as indicated by the transition from Start-up Mode to Ventilation Mode in the GUI state machine (Figure 3.1) and the Controller state machine (Figure 4.1). If "start ventilation" is selected without the patient connected, the system would transition to Ventilation Mode but would not initiate actual ventilation until patient connection parameters are met. This design allows for pre-configuration and immediate readiness upon patient connection, enhancing responsiveness in critical care scenarios.
+
+### Issue #4: Breathing Cycle and Expiration Phase in PSV Mode
+In PSV mode, the breathing cycle ends, and the expiration phase ends when certain conditions are met:
+- The breathing cycle in PSV mode is initiated by a sudden drop in pressure (CONT.36.1) and ends when the inspiratory flow drops below a set fraction of the peak flow (CONT.33), indicating the start of the expiration phase.
+- The expiration phase ends either when a new breath is initiated by the patient (detected as a sudden drop in pressure - CONT.36.1) or when the system automatically switches to PCV mode due to apnea (CONT.37), indicating the start of a new breathing cycle.
+
+### Issue #5a and #5b: Mode Transitions Post Self-Test and Standby Mode Repetition
+- FUN.9 implies a transition to a monitoring state, which can be interpreted as part of the Standby Mode where the system is ready but not actively ventilating. This does not necessarily indicate a mode change to 'Ventilation Mode' but rather a readiness to monitor and ventilate as needed.
+- The repetition of transitioning to Standby Mode in FUN.9 and FUN10.4 serves to emphasize the system's readiness state post-initialization (self-test completion) and configuration adjustments. It ensures clarity that regardless of the path taken (new patient setup or resuming ventilation), the system returns to a ready state before active ventilation begins.
+
+### Issue #6: Relationship Between Requirements and Sub-Requirements
+Sub-requirements provide detailed conditions or actions that support the fulfillment of the main requirement. They can be seen as specific instances, conditions, or clarifications that are necessary for the comprehensive implementation of the main requirement. In essence, they detail how the main requirement can be achieved or specify additional conditions that refine the main requirement, ensuring a thorough understanding and implementation.
+
+### Issue #8a, #8b, and #8c: Start-up Sequence of Controller and GUI
+- In a normal case, the start-up of the controller occurs before that of the GUI to ensure that the hardware and lower-level functions are ready before the user interface becomes active. This sequence ensures system integrity and readiness for user interaction.
+- The GUI can be faster in reaching its ready state compared to the controller because the GUI's readiness primarily involves loading the interface and default settings, which can be less time-consuming than the hardware checks and initializations required by the controller.
+- When the controller is in the SelfTest state, the GUI may indeed be in the Start, SelfTest, or even StartUp state, reflecting the interactive and parallel processes of system checks and user interface readiness.
+
+### Issue #12: Default/Range Values for max_exp_pause and max_ins_pause
+The document does not explicitly mention default or range values for max_exp_pause and max_ins_pause. These values are critical for ensuring safe and effective ventilation pauses. The omission suggests a need for clarification or addition to the specifications to cover these parameters comprehensively.
+
+### Issue #14a and #14b: Ventilation Without Setting Parameters and Default Values
+- Starting ventilation without setting patient-specific parameters is possible (Figure 3.1), and the system would use default values as per the requirements for PCV and PSV modes. This design allows for rapid initiation of ventilation in emergency scenarios, with the understanding that customization can follow as patient data becomes available.
+- The absence of specified default values for some parameters (e.g., PEEP, FiO2) implies that any value within the specified range can be chosen during the StartUp mode. This flexibility allows clinicians to use their judgment based on the patient's immediate needs but also highlights the importance of setting these critical parameters promptly.
+
+### Issue #16a and #16b: Measurement and Display of Parameters
+- The document outlines the requirement for the system to measure and display various parameters (e.g., FUN.43 - FUN.48) but does not detail the calculation methods. These methods are crucial for ensuring accuracy and reliability in patient monitoring.
+- The measured values of parameters like FiO2 and PEEP can indeed differ from the set values due to system performance, environmental conditions, or patient interactions. This discrepancy underscores the importance of continuous monitoring and potential system calibration to maintain therapeutic effectiveness.
+
+### Issue #17: Updating Parameters During Ventilation
+When parameters are updated during ventilation (inspiration or expiration), it implies that the system must adapt to these changes in real-time. While the document does not explicitly state the immediate effect on inspiration/expiration duration, it is implied that such updates could influence the ventilation cycle to accommodate the new settings, ensuring patient safety and adherence to therapeutic goals.
+
+### Issue #18: Valve State Sensors and Safety
+The absence of a specific mention of sensors for monitoring valve states (Page 20) suggests a potential area for enhancement in the specifications. Incorporating sensors to provide real-time feedback on valve states would enhance system reliability and safety, allowing for immediate corrective actions in case of valve failures.
+
+### Issue #19: Controller's Ability to Drive Valves to Safe States
+The ability of the controller to drive valves to their safe states in case of failure (AL44 and AL45) implies a mechanism by which the controller can override normal valve operations to ensure patient safety. This capability is crucial for handling unexpected hardware malfunctions effectively.
+
+### Issue #15: Common Parameters for PSV and PCV
+The exclusion of Target Inspiratory Pressure (P_insp) and ITS as common parameters for both PSV and PVS modes might be based on the distinct operational contexts of these modes. However, considering the physiological principles underlying mechanical ventilation, revisiting this decision could enhance the system's flexibility and applicability across different patient needs.

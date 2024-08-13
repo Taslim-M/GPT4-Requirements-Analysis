@@ -1,0 +1,11 @@
+Based on the provided Software Requirements Specification (SRS) for a Mechanical Lung Ventilator, it is indeed acceptable to start ventilation for a new patient without setting the desired parameters for that patient explicitly. According to the requirements, if a new patient is selected (GUI.45.3), the system moves to "Self-test" and then potentially to ventilation modes with default configuration parameters loaded if specific parameters are not set by the user. This is supported by several points in the SRS:
+
+1. **Default Configuration Parameters**: The system initializes with default configuration parameters during the Start-up Mode (GUI.111 and CONT.12). This implies that there is a predefined set of parameters that the system can use to operate safely without immediate user input.
+
+2. **Transition to Ventilation Modes**: The GUI and controller state machines allow transitioning to ventilation modes (PCV or PSV) without explicit mention that all parameters must be user-defined before starting ventilation (GUI.61 and CONT.5, CONT.6). The system's ability to operate with default parameters is implied here.
+
+3. **Safety and Fail-safes**: The SRS includes numerous requirements for safety and fail-safe modes (e.g., CONT.46, CONT.44), suggesting that the system is designed to operate safely under various conditions, including with default parameters.
+
+4. **Self-Test and Configuration Loading**: The system performs a self-test and loads configuration parameters during startup (GUI.11, GUI.111, CONT.12). If the system transitions directly to ventilation from these states without additional user input, it would use these loaded parameters, which include default values.
+
+Therefore, while it is possible to start ventilation with default values, the SRS implicitly encourages user review and customization of parameters to suit individual patient needs through its GUI design and the availability of settings and self-test modes before ventilation starts. This design choice balances the need for rapid response in emergency situations against the need for patient-specific care adjustments.

@@ -1,0 +1,33 @@
+1. **Are there any ambiguities or unclear statements in the Introduction section as a whole?**
+
+Yes, there are several ambiguities and unclear statements in the Introduction section:
+
+- The statement "The MVM has obtained the FDA (Food and Drug Administration) Emergency Use Authorization (EUA) followed by authorizations issued by Health Canada and the CE marking as well" could benefit from specifying the date or period these authorizations were obtained, as regulatory statuses can change.
+- The simplifications made to the MVM for the case study are mentioned, but it's not clear how these simplifications might impact the functionality or safety of the ventilator compared to the original MVM. For instance, removing the supervisor component and using only visual alarms could have significant implications for patient safety and usability that are not discussed.
+- The term "limited cost" is vague. It would be more informative to provide a range or specific target cost for the ventilator.
+
+2. **Are there any ambiguities or unclear statements in the Mechanical lung ventilator subsection?**
+
+Yes, there are ambiguities and unclear statements in this subsection:
+
+- The description of the ventilator's operation modes (PCV and PSV) is technical but lacks clarity on how these modes specifically impact patient care. For example, it mentions that PSV mode is not suitable for patients unable to start breathing on their own but does not explain how the ventilator detects this or what criteria are used.
+- The explanation of the inspiratory and expiratory pauses and the recruitment maneuver could be confusing for readers not familiar with respiratory therapy. More context or a simpler explanation could help.
+- The transition between the explanation of the ventilator's modes and the description of the high-level software architecture is abrupt. A clearer separation or introduction to the shift in focus would improve readability.
+
+3. **Are there any ambiguities or unclear statements in the Structure of the document subsection?**
+
+This subsection is relatively clear in its description of the document's structure. However, it could be considered ambiguous in terms of how comprehensive each chapter is. For example:
+
+- It does not specify whether Chapter 2's "general specification of the ventilator" includes both hardware and software aspects or focuses solely on one area.
+- The "Requirement Numbering Convention" is a helpful addition, but it's not clear if these codes are used consistently throughout the document or if exceptions exist.
+
+4. **Are there any ambiguities or unclear statements in the Suggested outcomes subsection?**
+
+Yes, there are ambiguities and unclear statements:
+
+- The statement about the lack of developers' skills with any formal method is vague. It does not specify whether this refers to the original MVM team, potential readers of the document, or another group.
+- The phrase "we want to propose this case study" is somewhat informal and does not clearly indicate who "we" refers to. Is it the authors of the document, the MVM team, or another entity?
+- The list of possible outcomes is described as "non-exhaustive," which is understandable, but it might leave readers wondering what other outcomes could be considered important.
+- The mention of "ABZ2022" assumes prior knowledge or context that the reader may not have, making it unclear what this reference is to or why it's relevant.
+
+Overall, while the Introduction provides a broad overview of the mechanical lung ventilator and the document's structure, several areas could benefit from clarification or additional detail to avoid potential misunderstandings.

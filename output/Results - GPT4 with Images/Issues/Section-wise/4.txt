@@ -1,0 +1,9 @@
+In PSV mode, the end of the breathing cycle and the expiration phase are determined by specific conditions set by the system based on the patient's spontaneous breathing efforts and the parameters configured by the healthcare professional.
+
+For the breathing cycle to end in PSV mode, it is primarily determined by the patient's own breathing efforts in conjunction with the system's configured settings. Specifically, the breathing cycle in PSV mode is initiated by a sudden drop in pressure above a user-settable threshold (Inhale Trigger Sensitivity, ITS_PSV) as per FUN.25. This means the start of the breathing cycle is patient-triggered. The end of the breathing cycle, or more specifically, the transition from the inspiratory phase to the expiratory phase, is determined by the Expiratory Trigger Sensitivity (ETS) setting as per FUN.26. The expiration phase starts when the inspiratory flow drops below a settable fraction of the peak flow, indicating the end of the patient's inspiratory effort.
+
+Therefore, in PSV mode:
+- The **end of the breathing cycle** is not explicitly defined as a single event but is a result of the transition from the inspiratory phase to the expiratory phase, followed by the patient's next spontaneous breath that meets the ITS_PSV criteria to start a new cycle.
+- The **end of the expiration phase** occurs when the patient initiates a new breath that causes a sudden drop in pressure above the ITS_PSV threshold, starting a new breathing cycle.
+
+In summary, in PSV mode, both the end of the breathing cycle and the expiration phase are dynamically determined by the patient's spontaneous breathing efforts in relation to the configured ITS_PSV and ETS settings.

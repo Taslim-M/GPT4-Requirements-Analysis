@@ -1,0 +1,11 @@
+The controller can drive the valves to their safe states in the event of a failure by utilizing the fail-safe mechanisms built into the system's design. This does not imply that the controller can "force" a malfunctioning valve to operate normally; rather, it means that the controller can command the valves to move to predefined safe positions that minimize the risk to the patient and the system itself. 
+
+For instance, in the case of the input valve (in valve) and output valve (out valve), the safe state is typically defined as follows:
+- The in valve is moved to the closed position (pressure set to 0), preventing any further influx of air or oxygen to the patient's circuit.
+- The out valve is moved to the open position, allowing air in the patient's circuit to escape to the atmosphere, thereby preventing the buildup of excessive pressure.
+
+These actions are designed to protect the patient in the event of a valve failure by ensuring that the ventilation system does not contribute to a dangerous increase in airway pressure or fail to provide the necessary exhalation path. 
+
+The requirements specify that these actions should occur "within no more than one respiratory cycle" (as seen in AL.16.1, AL.18.1, AL.21.2, AL.42.1, AL.43.1, AL.44.1, and AL.45.1), indicating that the system is designed to respond rapidly to identified failures, thereby minimizing the potential for harm.
+
+This approach is part of the system's broader fail-safe strategy, which is a critical aspect of medical device design, especially for life-supporting systems like mechanical ventilators. The fail-safe mode (CONT.1.6) specifically mentions forcing input and output valves to their de-energized states (in valve closed and out valve open) as a general response to detected errors, further emphasizing the system's reliance on predefined safe states rather than attempting to "force" malfunctioning components to operate as intended.

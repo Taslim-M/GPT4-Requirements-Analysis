@@ -1,0 +1,318 @@
+5 Alarms
+ID - Requirement / Rationale - Input Ref.
+AL.1 - The user shall be able to set alarm thresholds when the ventilator is either ventilating or not. - FUN.39
+AL.1.1 - If ventilator is ventilating, the alarm threshold used while user changes are the last saved. - FUN.39
+AL.2 - The visual alarms shall follow the requirements listed in
+
+Section 5.2.
+AL.3 - The system shall have clearly ranked (high/medium/low priority) visual alarms. Rationale: regulatory requirement - ISO 60601-1-8 + FUN.38
+AL.4 - ALARM SYSTEMS Shall generate visual ALARM SIGNALS to indicate the presence of ALARM CONDITIONS, their priority and each specific ALARM CONDITION. - IEC 60601-1-8 6.3.2.1
+AL.5 - Additional requirements for 1 m (operator’s position) visual alarm signals and information signals High priority alarm signals should be accompanied by information describing possible causes of the alarm condition and appropriate actions to take in response. Operator action may be required to display this information. - ISO 80601-2-12 208.6.3.2.2.2.101
+AL.6 - If MULTIPLE ALARM CONDITIONS occur at the same time, each individual ALARM CONDITION shall be visually indicated - IEC 60601-1-8 6.3.2.2.2
+AL.7 - Visual information signals, if provided, shall be correctly perceived as different from HIGH PRIORITY or MEDIUM PRIORITY visual alarm signals. Rationale: the user must be able to identify the priority of the alarms by using different colors for instance. - IEC 60601-1-8 6.3.2.2.2
+AL.8 - An alarm system shall be provided with at least one manufacturer configured alarm preset. - IEC 60601-1-8 6.5.2
+AL.9 - The system shall prevent the operator from saving changes to the alarm preset IEC 60601-1-8 6.5.2
+AL.10 - If an operator-adjustable alarm limit is provided the alarm limit shall be displayed when required by the operator - IEC 60601-1-8 6.6.2.1
+AL.11 - During adjustment of any alarm limit, the alarm system shall continue to operate normally - IEC 60601-1-8 6.6.2.3
+AL.12 (Acknowledgment) The machine shall allow the operator to cease the alarm signal for which no associated alarm condition currently exists (ALARM RESET). - IEC 60601-1-8 6.8
+
+5.1 Alarm list
+All the alarms shall be displayed on the GUI (except those referred to GUI failure), and each alarm belongs to one of the three priority classes; each of these classes requires to display the alarm on the GUI.
+
+ID - Requirement / Rationale - Input Ref.
+AL.13 - Power disconnection
+The system has successfully switched over to backup battery.
+Alarm condition: PowerType(t1) = power and PowerType(t2) = battery where t1<t2
+Priority: MEDIUM
+Raised by: Controller
+- SAV.2.1
+AL.14 - Battery Failure SAV.2
+AL.14.1 - Battery fail
+A battery failure when the system is powered from AC shall be detected and signalled.
+Alarm condition: Battery failure
+Priority: HIGH
+Raised by: Controller
+- SAV.2
+AL.14.2 - When the ventilator is connected to the battery and 10 minutes of backup battery power remain.
+Alarm condition: Remaining battery time < 10 min
+Priority: HIGH
+Raised by: Controller
+- SAV.2.2
+AL.14.3 - When the ventilator is connected to the battery and 5 minutes of backup battery power remain.
+Alarm condition: Remaining battery time < 5 min
+Priority: HIGH
+Raised by: Controller
+- SAV.2.3
+AL.15 - Internal power voltages - SAV.2
+AL.15.1 - System Internal power under-over voltage The system shall raise an alarm if the internal power voltages are out of safe ranges.
+Alarm condition: SystemVoltage < 10.5 V or SystemVoltage > 14.1 V
+Priority: HIGH
+Raised by: Controller
+- SAV.2
+AL.15.2 - Power supply under-over voltage
+The system shall raise an alarm if the power supply voltages are out of safe ranges.
+Alarm condition: PowerSupply < 11 V or
+PowerSupply > 14.5 V
+Priority: HIGH
+Raised by: Controller
+- SAV.2
+AL.15.3 - Battery supply under-over voltage
+The system shall raise an alarm if the battery supply voltages are out of safe ranges.
+Alarm condition: BatteryVoltage < 4.5 V or
+BatteryVoltage > 5.2 V
+Priority: HIGH
+Raised by: Controller
+- SAV.2
+AL.15.4 - GUI under-over voltage
+The system shall raise an alarm if the GUI power voltages are out of safe ranges.
+Alarm condition: GUIVoltage < 4.7 V
+GUIVoltage > 5.5 V
+Priority: HIGH
+Raised by: Controller
+- SAV.2
+AL.16 - ADC failure
+The system shall raise an alarm if ADC devices do not respond after a fixed number of retries (maximum 5) or report an error.
+Alarm condition: ADC is not responding
+Priority: HIGH
+Raised by: Controller
+- FUN.33
+AL.16.1 - Whenever the ADC alarm condition occurs, the controller shall drive input and output valves to their safe state, within no more than one respiratory cycle.
+AL.17 - Leakage in gas circuit
+The system shall raise an alarm if there is significant leakage in the gas circuit.
+Alarm condition: Unintended leakage from the ventilator should not exceed: 200 ml/min at
+50 cmH20
+Priority: MEDIUM
+Raised by: Controller
+- SAV.14
+
+
+AL.18 - Complete Obstruction in pneumatic circuit
+The system shall raise an obstruction in pneumatic circuit alarm when the alarm limit for obstruction is reached.
+Alarm condition: Internal pressure exceeds 5bar and PAW is below 1.5bar in two consecutive observations
+Priority: HIGH
+Raised by: Controller
+- SAV.15
+AL.18.1 - The controller shall drive input and output valves to their safe state.
+AL.19 - Partial Obstruction in pneumatic circuit
+The system shall raise an partial obstruction in pneumatic circuit alarm when alarm limit for partial obstruction is reached.
+Alarm condition: Internal pressure exceeds double of PAW in two consecutive observations
+Priority: HIGH
+Raised by: Controller
+- SAV.15
+AL.20 - Obstruction in inhale branch - Inspiratory airway pressure too low.
+Obstruction in the inhale branch shall be raised if the PAW is out of range.
+Alarm condition: PAW < Min P_insp
+Priority: HIGH
+Raised by: Controller
+- SAV.3, SAV.12
+AL.20.1 - The alarm condition delay shall not exceed more than two respiratory cycles or 5 s, whichever is greater.
+AL.21 - Obstruction in exhale branch - PEEP too high
+Obstruction in the exhale branch shall be raised if the
+PEEP is out of range.
+Alarm condition: PEEP > Max PEEP
+Priority: HIGH
+Raised by: Controller
+- SAV.24
+AL.21.1 - The alarm condition delay shall not exceed more than two
+respiratory cycles or 5 s, whichever is greater.
+- SAV.24.1
+AL.21.2 - Whenever the obstruction alarm condition occurs, the
+controller shall drive input and output valves to their safe
+state, within no more than one respiratory cycle.
+AL.22 - Obstruction in patient branch - Inspiratory flux too low
+The obstruction in the patient branch shall be raised
+when the flow is out of range.
+Alarm condition: VE< Min VE
+Priority: HIGH
+Raised by: Controller
+- SAV.15, SAV.16, SAV.18
+AL.23 - Oxygen level too high
+The system shall raise an alarm when the delivered oxygen concentration value (%) exceeds the set FiO2 + 3%, i.e., due to failing gas supply.
+Alarm condition: OS > desired FiO2+ 3%
+Priority: MEDIUM
+Raised by: Controller
+- SAV.1
+AL.24 - Oxygen level too low
+The system shall raise an alarm when the delivered oxygen concentration value (%) is below the set FiO2 - 3%, i.e., due to failing gas supply.
+Alarm condition: OS < desired FiO2- 3%
+Priority: MEDIUM
+Raised by: Controller
+- SAV.1
+AL.25 - Inspiratory flux too high
+The system shall raise an alarm when inspiratory flux (VE) exceeds Max VE.
+Alarm condition: VE > Max VE
+Priority: MEDIUM
+Raised by: Controller
+- SAV.17, SAV.19
+AL.26 - Inspiratory airway pressure too high
+Inspiratory PAW exceeds the user-set high-pressure alarm limit.
+Alarm condition: PAW > Max P_insp
+Priority: HIGH
+Raised by: Controller
+- SAV.4, SAV.13
+AL.26.1 - The high airway pressure alarm condition delay shall not
+exceed 200 ms.
+- SAV.4.1
+AL.26.2 - Whenever the high-pressure alarm condition occurs, the controller shall raise the alarm, within no more than two respiratory cycles or 15 s.
+- SAV.4.2
+AL.26.3 - The controller shall drive input and output valves to their safe state reducing the airway pressure to either: the atmospheric pressure; or the set PEEP level.
+- SAV.4.2
+
+
+AL.27 - Disconnection alarm condition - PEEP too low
+The ventilator shall be equipped with an alarm system that detects a technical alarm condition to indicate when conditions in the ventilator reach the alarm limit for disconnection.
+Alarm condition: PEEP < Min PEEP
+Priority: HIGH
+Raised by: Controller
+- SAV.5, SAV.25
+AL.28 - Gas pressure input too low
+The system shall raise an alarm when the pressure at the entrance of the circuit is too low.
+Alarm condition: When the input valve is open and the pressure out of the gas blender is too low: Pin GB < MIN Pin GB, MIN Pin GB =3800 cmH2O
+Priority: MEDIUM
+Raised by: Controller
+- SAV.10
+AL.29 - Gas pressure input too high
+The system shall raise an alarm when the pressure at the entrance of the circuit is too high.
+Alarm condition: When the input valve is open and the pressure out of the gas blender is too high: Pin GB > MAX Pin GB, MAX Pin GB=5300 cmH2O
+Priority: MEDIUM
+Raised by: Controller
+- SAV.11
+AL.30 - Over Temperature alarm
+The system shall raise an alarm if the internal temperature of the system exceeds 75◦C. The controller shall transition to the fail-safe mode.
+Alarm condition: BoardTemperature > 75◦C
+Priority: HIGH
+Raised by: Controller
+- SAV.21
+AL.31 - Expiratory V_tidal exp too low
+The system shall raise an alarm when the patient is hypo-ventilating, i.e., expiratory tidal volume is below the V_tidal exp min limit.
+Alarm condition: V_tidal exp < Min V_tidal exp
+Priority: MEDIUM
+Raised by: Controller
+- SAV.8
+AL.32 - Expiratory V_tidal exp too high
+The system shall raise an alarm when the patient is hyperventilating, i.e. expiratory tidal volume exceeds V_tidal exp max limit.
+Alarm condition: V_tidal exp > Max V_tidal exp
+Priority: MEDIUM
+Raised by: Controller
+- SAV.9
+AL.33 - Inspiratory V_tidal insp too low
+The system shall raise an alarm when the patient inspiratory tidal volume is below the V_tidal insp min limit.
+Alarm condition: V_tidal insp < Min V_tidal insp
+Priority: MEDIUM
+Raised by: Controller
+- SAV.8
+AL.34 - Inspiratory V_tidal insp too high
+The system shall raise an alarm when the inspiratory tidal volume exceeds V_tidal insp max limit.
+Alarm condition: V_tidal insp > Max V_tidal insp
+Priority: MEDIUM
+Raised by: Controller
+- SAV.9
+AL.35 - Respiratory rate too low
+The system shall raise an alarm when the measured respiratory rate is below Min RR.
+Alarm condition: RR < Min RR
+Priority: HIGH
+Raised by: Controller
+- SAV.6
+AL.36 - Respiratory rate too high
+The system shall raise an alarm when the measured respiratory rate exceeds Max RR.
+Alarm condition: RR > Max RR
+Priority: HIGH
+Raised by: Controller
+- SAV.7
+
+
+AL.37 - Apnea alarm
+The system shall raise an alarm when the time since last inspiration greater than apnea lag.
+Alarm condition: When the expiratory duration in PSV mode is greater than the apnea lag.
+Priority: HIGH
+Raised by: Controller
+- SAV.22
+AL.38 - GUI failure
+The system shall raise an alarm if the communication between controller and GUI is lost, or in case of a GUI failure.
+Alarm condition: No communication between controller and GUI
+Priority: HIGH
+Raised by: Controller
+- 201.13.2.104 + SAV.23
+AL.38.1 - Controller failure
+The GUI shall raise an alarm if the communication between controller and GUI is lost, or in case of a Controller
+failure.
+Alarm condition: No communication between controller and GUI
+Priority: HIGH
+Raised by: GUI
+- 201.13.2.104 + SAV.23
+AL.39 - Unable to read sensor pressure
+The system shall raise an alarm if the communication
+between controller and sensor pressure is lost.
+Alarm condition: No communication between controller and sensor prssure
+Priority: HIGH
+Raised by: Controller
+- 201.13.2.104 + SAV.26
+AL.40 - Unable to read oxygen sensor
+The system shall raise an alarm if the communication
+between controller and oxygen sensor (OS) is lost.
+Alarm condition: No communication between controller and oxygen sensor
+Priority: HIGH
+Raised by: Controller
+- 201.13.2.104 + SAV.26
+AL.41 - Unable to read sensor flux
+The system shall raise an alarm if the communication
+between controller and sensor flux (FI2) is lost.
+Alarm condition: No communication between controller and sensor flux
+Priority: HIGH
+Raised by: Controller
+- 201.13.2.104 + SAV.26
+FUN.59 Unable to read gas flow to patient
+The system shall raise an alarm if the communication
+between controller and gas flow sensor (FI1) is lost.
+Alarm condition: No communication between Controller and sens FI2
+Priority: MEDIUM
+Raised by: Controller
+- 201.13.2.104 + SAV.26
+AL.42 - Fan tachometer
+The controller shall raise an alarm if fan tachometer input
+indicates fan is not rotating.
+Alarm condition: Fan is not rotating
+Priority: HIGH
+Raised by: Controller
+- FUN.32
+AL.42.1 - Whenever the FAN alarm condition occurs, the controller
+shall drive input and output valves to their safe state,
+within no more than one respiratory cycle.
+AL.43 - I:E ratio
+The I:E ratio is less than 0.01 for more than 4 consecutive cycles.
+Alarm condition: I:E < 0.01
+Priority: HIGH
+Raised by: Controller
+- FUN.32
+AL.43.1 - Whenever the I:E ratio alarm condition occurs, the controller shall drive input and output valves to their safe
+state, within no more than one respiratory cycle.
+AL.44 - Input valve failure
+The controller shall raise an alarm if the input valve (IN valve) does not change value.
+Alarm condition: Input valve does not change value
+when the phase swaps from inspiratory to expiratory and vice versa
+Priority: HIGH
+Raised by: Controller
+- FUN.32
+
+AL.44.1 - Whenever the input valve alarm condition occurs, the controller shall drive input and output valves to their safe state, within no more than one respiratory cycle.
+AL.45 - Out valve failure
+The controller shall raise an alarm if out valve (OUT valve) does not change its state.
+Alarm condition: Out valve does not change state when the phase swaps from expiratory to inspiratory and vice versa.
+Priority: HIGH
+Raised by: Controller
+- FUN.51
+AL.45.1 - Whenever the output valve alarm condition occurs, the controller shall drive input and output valves to their safe state, within no more than one respiratory cycle.
+AL.46 - SD GUI failure
+The system shall raise an alarm in case the GUI is not able to update the log file.
+Alarm condition: The GUI is not able to update the log file
+Priority: MEDIUM
+Raised by: GUI
+5.2 Visual alarm signals
+The IEC 60601-1-8 indicates the following characteristics of visual alarms:
+
+Category;Color;Flashing frequency;Duty cycle
+High;Red;2,0Hz;50%
+Medium;Yellow;0,6Hz;50%
+Low;Yellow;Constant;100%
+
+The alarm is visualized using an RGB LED mounted on the ventilator.

@@ -1,0 +1,33 @@
+1. **Ambiguities or Unclear Statements in the System Requirements Section:**
+
+- The requirement FUN.18 mentions a "leak compensation feature" but does not specify the criteria for what constitutes an "acceptable" leak versus an "unacceptable" leak, leaving room for interpretation.
+- FUN.22 mentions that the Recruitment Maneuver (RM) is not allowed in North America without providing a rationale or specifying how the system should behave in North American markets.
+- FUN.23.3 states that the switch to PSV occurs at the end of a PCV inspiratory time, but it does not clarify if there is any delay or immediate action once the inspiratory time concludes.
+- FUN.27.2 mentions "pre-determined apnea backup settings" but does not specify who determines these settings or when they are established.
+
+2. **Ambiguities or Unclear Statements within the Functional Requirements Table:**
+
+- FUN.4 lists various modes but does not specify how the system transitions between Fail-safe mode and other modes, or how the system recovers from Fail-safe mode.
+- FUN.10.3 allows for skipping or optionally rerunning individual steps of the self-test procedure but does not specify under what conditions or criteria these options should be considered.
+- FUN.19 and FUN.24 describe the characteristics of PCV and PSV modes with reference to "plots of pressure and flow versus time" without including these plots or describing them in detail within the text.
+
+3. **Ambiguities or Unclear Statements within the Measured and Displayed Parameters Table:**
+
+- The table mentions measuring and displaying parameters like respiratory rate and peak inspiratory pressure but does not specify the accuracy or resolution of these measurements.
+- FUN.48.1 states that the user sets the desired FiO2 value, but it's unclear how the system ensures that the actual FiO2 matches the user's setting, especially considering potential variations in gas supply.
+
+4. **Ambiguities or Unclear Statements within the Values and Ranges Sub-section:**
+
+- PER.1 and PER.17-18 mention setting PEEP values but do not specify how these adjustments are made in real-time or the system's response time to these adjustments.
+- PER.14's default value for Target inspiratory pressure (P_insp AP) is listed as 0 cm H2O, which seems like an oversight or error since having a default value of 0 would not be clinically useful.
+
+5. **Ambiguities or Unclear Statements within the Sensors and Interfaces Sub-section:**
+
+- The description of the sensors and interfaces provides a high-level overview but lacks detail on the communication protocols or data formats used for the interface between the GUI and controller, which could lead to integration challenges.
+
+6. **Ambiguities or Unclear Statements within the Alarm Requirements:**
+
+- SAV.14 specifies an alarm for significant leakage but does not define what constitutes "significant" leakage beyond a numerical value, which may not account for all clinical scenarios.
+- SAV.24 and SAV.24.1 mention alarms for exceeding PEEP limits but do not specify the system's response to these alarms to ensure patient safety.
+
+Overall, while the document attempts to cover a comprehensive range of requirements for a Mechanical Lung Ventilator, several areas could benefit from further clarification to avoid potential misunderstandings or ambiguities during development and implementation.

@@ -1,0 +1,413 @@
+2 System Requirements
+This chapter contains a high-level description of the system requirements, defining the functional requirements and interface requirements. The requirements are generic and independent of any technical solution to allow greater flexibility in the ventilator development.
+2.1 Functional Requirements
+These requirements cover normal operating modes, e.g., start-up, PCV, PSV, and any direct responses required following abnormal operation, e.g., pressure relief, alarm conditions for control systems.
+
+Figure 2.1: High level operation diagram
+Figure 2.1 illustrates the high-level operation diagram for a mechanical lung ventilator, presented as a UML activity diagram. Below is a descriptive prompt that details the diagram:
+
+- The process begins with the "Start-up" stage and immediately moves to a decision point with the condition `<new patient?>`.
+    - If the answer is 'yes', the ventilator performs a "SelfTest".
+      - If the self-test is successful (denoted by "selftestPassed"), the system transitions to the "StandBy" stage.
+    - If the answer is 'no', the system directly transitions to "StandBy" stage.
+- From "StandBy," the ventilator can move to "Ventilation" by either starting PCV (Pressure-Controlled Ventilation) or PSV (Pressure Support Ventilation), as indicated by "startPCV" or "startPSV".
+- The "Ventilation" stage encapsulates two modes of operation:
+  - "PCV" can loop back on itself or transition to "PSV". The diagram implies that the system can switch between these modes during ventilation.
+  - "PSV" can likewise loop back to itself, indicating continuous pressure support ventilation until another action is taken.
+- If ventilation is to be stopped, the "stopVentilation" transition leads back to "StandBy".
+- An "error" event during "Ventilation" leads the diagram to a "FailSafe" stage, which indicates a safety mechanism to handle malfunction scenarios.
+- The diagram has two explicit "powerOff" transitions:
+  - One from the "FailSafe" stage, illustrating that the system can be turned off after a failure from any of the stages.
+  - The other at the end of the "Ventilation" phase, showing that the system can be turned off after use from any of the stages.
+
+The various transitions between stages are represented by arrows, and the entire process flow is encapsulated between a start (a filled circle) and an end (a circle with a concentric dark circle) indicator.
+
+
+ID - Requirement / Rationale - Input Ref.
+FUN.1 - The system shall provide ventilation support for patients who require mechanical ventilation and weigh more than 40 kg (88 lbs). Rationale: ventilation of children and infants is more challenging
+FUN.2 - The system shall provide pressure regulated ventilation controlling the inspiratory pressure. Rationale: pressure regulated ventilation is most beneficial for COVID-19 patients
+FUN.3 - The system shall provide positive end expiratory pressure (PEEP) ventilation. Rationale: PEEP is important to keep alveoli recruited at the end of expiration
+FUN.4 - The system shall implement the following operating modes:
+1. Start-up Mode: The Start-up Mode initializes the
+system and is part of a start-up procedure to get
+the system ready to be used to ventilate a patient.
+2. SelfTest Mode: The SelfTest Mode ensures that the
+system is fully functional and is part of the startup procedure to get the system ready to be used to
+ventilate a new patient
+3. Standby Mode: In the Standby Mode the ventilation is ready for ventilating a patient, ventilation is
+off, and ventilation parameters can be set.
+4. Pressure Controlled Ventilation Mode (PCV): Pressure Controlled Ventilation mode is a normal operating mode that is used when patients have no
+spontaneous respiration.
+5. Pressure Support Ventilation Mode (PSV): Pressure Support Ventilation is a normal operating
+mode that during which the patient initiates each
+breath and the ventilator supports the breath at the
+appropriate pressure level.
+6. Fail-safe mode: the controller detects a severe condition that required an alarm to be raised and to
+bring the machine to a fail-safe mode (in valve
+closed and out valve open).
+Rationale: Pressure Controlled and Pressure Support
+Ventilation are the two basic modes of pressure regulated
+support needed for COVID-19 patients. A Start-up mode
+is needed to properly ensure that the system is fully functional before starting the ventilation of a patient. Pressure Controlled Ventilation is needed for patients in respiratory failure or fully sedated. Pressure Support Ventilation is needed for patients able to breathe on their own,
+in particular during the weaning process.
+
+FUN.5 - The Start-up Mode shall be initiated by pushing the power button of the system once the system has been connected to the breathing circuit (without connection to the patient), the air supply, and the power source. Rationale: need to turn on the system once all connections are attached so the sensors and valves can be properly tested.
+FUN.5.1 - Upon initiation of the Start-up Mode, the system shall go through an initialization process that loads default parameters and checks the system memory and the communication of the controller with the sensors and valves, as well as between the controller and the GUI. Rationale: Need to ensure that the system properly started.
+FUN.5.2 - The system shall indicate to the user that the initialization process has been completed successfully or failed. In case of a failure the user shall be warned that the system is out-of-service. In addition, any other operations shall be not allowed. Rationale: only a fully functional unit shall be used with a patient
+FUN.5.3 - The patient shall not be connected to the breathing circuit when the system is powered on and through start-up and self-test.
+FUN.6 - The system shall have a self-test procedure that ensures the system and its accessories are fully functional and the alarms work. - ISO 80601-2-12 201.7.9.2.8.101
+FUN.6.1 - The self-test procedure shall confirm the switchover from external to internal power works.
+FUN.6.2 - The self-test procedure shall confirm there are no unacceptable leaks in the breathing circuit.
+FUN.6.3 - The self-test procedure shall confirm the FI2 flow meter (see Figure 2.2) in the patient breathing circuit is connected in the right direction and is calibrated.
+FUN.6.4 - The self-test procedure shall confirm the expiratory valve is functional.
+FUN.6.5 - The self-test procedure shall confirm the oxygen sensor is calibrated.
+FUN.6.6 - The self-test procedure shall confirm the local alarms are functional.
+FUN.7 - If the self-test fails, the user shall be warned that the system is out-of-service. In addition, any other operations shall be not allowed.
+FUN.8 - The system shall log key parameters, save them before being powered off and load them upon start-up to be made available on a log page on the GUI.
+FUN.8.1 - The system shall have means to indicate visually the cumulative hours of operation of the ventilator, either 1) automatically; or 2) by operator action. - ISO 80601-2-12: 201.104
+FUN.8.2 - The system shall be equipped with an alarm system log with a capacity of at least 1000 events in total for: high priority alarm conditions; medium priority alarm conditions; and alarm signal inactivation states - ISO 80601-2-12:208.6.12.101
+FUN.8.3 - The system shall time stamp all alarm events either via the date and time, the elapsed time since the occurrence of the alarm condition, or the elapsed time from the start of use of system - ISO 80601-2-12:208.6.12.101
+FUN.8.4 - The system shall not lose the contents of the alarm system log during a loss of power for less than 7 d unless erased by authorized personnel of the hospital. - ISO 80601-2-12:208.6.12.101
+FUN.8.5 - The system shall not permit the healthcare professional operator to erase the contents of the alarm system log. - ISO 80601-2-12:208.6.12.101
+FUN.8.6 - The system shall provide a log to include any change of ventilator settings, including the value applied - ISO 80601-2-12:208.6.12.101
+FUN.8.7 - The system shall provide a log to include any change of alarm settings, including the value applied - ISO 80601-2-12:208.6.12.101
+FUN.8.8 - The system shall provide a log to include change of patient, including the patient attributes; - ISO 80601-2-12:208.6.12.101
+FUN.8.9 - The system shall provide a log to include power supply source change, including the source utilized - ISO 80601-2-12:208.6.12.101
+FUN.8.10 - The system shall provide a log to include results of the pre-use check. - ISO 80601-2-12:208.6.12.101
+FUN.8.11 - The system shall provide a log to include the overall duration of the active use of the O2 sensor (%-hours). Rationale: The oxygen sensor has a limited lifetime expectancy requiring a monitoring of its use in order to track its deterioration over time
+FUN.8.12 - The system shall log user-set ventilation and alarm parameters as well as the current calibration parameters. Rationale: user-set ventilation and alarm parameters need to be able for the resumption of ventilation in case the system has to be briefly turned off.
+FUN.9 - Once the self-test has been completed successfully and configurations have been loaded properly the system shall start monitoring and reporting health parameters. Rationale: At this point the monitoring module is able to carry out its assigned functionality.
+FUN.10 - Once the start-up has been completed successfully the user must select “New Patient” or “Resume Ventilation” before the system transitions to self-test mode. Rationale: in order to quickly resume ventilation for the same patient in case the unit had to be powered down
+FUN.10.1 - If “New Patient” is selected, the user shall have to enter patient attributes and the completion of every step of the self-test procedure (FUN.6) shall be mandatory
+FUN.10.2 - If “Resume Ventilation” is selected, the system shall load the last calibration parameters, alarm thresholds, and ventilation parameters from the last active patient ventilation.
+FUN.10.3 - If “Resume Ventilation” is selected, every step of the selftest procedure FUN.6 can be skipped or optionally rerun individually.
+FUN.10.4 - Once all self-test steps have been completed successfully, it shall be possible to proceed to the Standby Mode.
+FUN.10.5 - In Standby Mode ventilation shall be off and it shall be possible to adjust all user-controlled parameters for ventilation and alarms before connecting to the patient and starting patient ventilation.
+FUN.10.6 - Once the power of the system has been off for more than 15 minutes it shall not be possible to select “Resume Ventilation”
+FUN.11 - The system shall connect to pressurized gas supply of oxygen and medical air and accept pressures up to 5.2 bar. Rationale: this covers the range of pressures available in hospital setting
+FUN.12 - The system shall provide breathing air through a standard medical supply single-limbed patient circuit with a pneumatically controlled diaphragm expiration valve. Rationale: this is readily available medical supply
+FUN.13 - The system shall measure and display the breathing rate (number of breathes per minute). Rationale: observing and identifying the monitored ventilation parameters is considered a primary operating function - ISO 80601-2-12 206.101
+FUN.14 - The system shall measure and display the percentage of oxygen in the gas being delivered to the patient. Rationale: observing and identifying the monitored ventilation parameters is considered a primary operating function - ISO 80601-2-12 206.101
+FUN.15 - The system shall measure the ventilator pressure at/near the inlet to the patient. Rationale: observing and identifying the monitored ventilation parameters is considered a primary operating function - ISO 80601-2-12 201.12.4.102 (b)
+FUN.16 - The system shall measure and display the volume of gas delivered to the patient per breathing cycle (tidal volume). Rationale: observing and identifying the monitored ventilation parameters is considered a primary operating function - ISO 80601-2-12 206.101
+FUN.17 - The system shall measure and display the flow of gas delivered to the patient per breathing cycle. Rationale: observing and identifying the monitored ventilation parameters is considered a primary operating function - ISO 80601-2-12 206.101
+FUN.18 - The system shall have a leak compensation feature for leaks in the patient breathing circuit which shall be disabled by default. Rationale: regulatory requirement
+FUN.18.1 - The user shall be able to disable/enable the leak compensation feature at any time.
+FUN.18.2 - When enabled, the leak compensation shall be activated by the Min PEEP alarm (SAV.15)
+FUN.19 - The system shall have a pressure control ventilation (PCV) mode, as characterized by the following plots of pressure and flow versus time. Rationale: this is the most appropriate procedure for COVID-19 patients as it allows the immediate reopening of the alveoli and is strongly recommended by the doctors and nurses in the COVID-19 wards of Lombardy, rather than the constant flow procedure. These characteristics of the ventilator pressure transient during the inspiratory cycle are crucial to avoid barotrauma and to minimise long term fatigue of muscles and alveoli induced by forced mechanical ventilation.
+FUN.20 - In PCV mode, the breathing cycle shall be defined by inspiratory pressure P_insp_PCV relative to atmosphere, respiratory rate (RR_PCV ) and the ratio between the inspiratory and expiratory times (I:E_PCV ). Rationale: standard parameters to define PCV. Note: The time for one breathing cycle will be equal to 1/RR_PCV . The expiratory time will be equal to 1/RR_PCV 1+I:E_PCV. For instance, if RR is 10 cycles for minutes and I:E is 1:2, the respiratory cycle will last 6 seconds, the inspiratory phase will last 2 seconds and the expiratory phase 4 seconds.
+FUN.21 - In PCV mode, a new breathing cycle shall be initiated either after a breathing cycle is over, or by patient request during expiration. Rationale: while the main mode of PCV is the control of the breathing cycle timing by the ventilator, the patient has to have the ability to trigger a breath on his own
+FUN.21.1 - A new breathing cycle shall be initiated by a sudden drop in pressure above a user-settable threshold (Inhale Trigger Sensitivity). Rationale: In a pressure-regulated ventilator, the intensity of pressure drop initiated by the patient is the easiest way to detect the spontaneous breathing attempt
+FUN.21.2 - A patient breath trigger shall reset the timer for the timecycled breathing cycle. Rationale: Avoid breath stacking, which would lead to hyperventilation
+FUN.22 - In PCV mode it shall be possible to initiate with the push of a single button a lung recruitment procedure, termed Recruitment Maneuver (RM). Note: This maneuver is not allowed in North America. Rationale: The RM is an emergency procedure required immediately after intubation. RM consists in the prolonged lung inflation at increased inspiratory set pressure, as necessary to reactivate the alveoli immediately after intubation.
+FUN.23 - The system shall provide means to switch from PCV to PSV while PCV ventilation is active. Rationale: the switchover between modes should not require stopping the ventilation in order to maintain ventilation of the patient
+FUN.23.1 - When a PCV-to-PSV switch is initiated by the user the system shall ask the user for confirmation/setting of PSV parameters to be used
+FUN.23.2 - The switch to PSV shall occur only after the PSV parameters have been confirmed and until that has happened the PCV ventilation shall continue
+FUN.23.3 - The switch to PSV shall occur at the end of a PCV inspiratory time
+FUN.24 - The system shall have a pressure support ventilation (PSV) mode, as characterized by the following plots of pressure and flow versus time. Rationale: In PSV mode, the ventilator supports the patient who is supposed to breathe spontaneously. PSV is needed to wean patients off the ventilation by allowing them to strengthen the muscles involved in breathing. PSV is not suitable for patients unable to initiate breaths on their own.
+FUN.25 - In PSV mode the breathing cycle shall be initiated by a sudden drop in pressure above a user-settable threshold (Inhale Trigger Sensitivity) Rationale: In a pressure-regulated ventilator, the speed of pressure drop initiated by the patient is the easiest way to detect the spontaneous breathing attempt as per ventilator experts
+FUN.26 - In PSV mode the expiration phase shall start when the inspiratory flow drops below a setable fraction of the peak flow (Expiratory Trigger Setting). Rationale: Dropping inspiratory flow indicates the end of the inspiration
+FUN.27 - In PSV mode the system shall check for the presence of apnea, which occurs when a patient does not take new breath within the allowable apnea lag time. Rationale: In case the patient stops breathing (apnea) the system needs to be able to ensure that the patient continues to be ventilated.
+FUN.27.1 - If apnea is detected, an apnea alarm shall be triggered. Rationale: Clinician needs to be made aware of the fact that patient stops breathing
+FUN.27.2 - If apnea is detected, the system shall automatically switch from PSV to PCV mode with pre-determined apnea backup settings for RR_AP , P_insp AP , I:E_AP . RR_AP and P_insp AP shall be set by the user. I:E_AP will be fixed at 1:2. Rationale: in case of apnea the ventilator needs to take over and ensure that ventilation continues to assure patient safety
+FUN.28 - In PCV and PSV mode there shall be the possibility to press a single button to initiate an Expiratory Pause that closes both inspiratory and expiratory valve at the end of the expiration phase as long as the operator holds the button but no longer than 60 sec. Rationale: The expiratory pause allows the determination of the residual pressure above the PEEP level, the residual value being PEEP + AutoPEEP. AutoPEEP level for the patient, providing information on the level of obstruction in the exhalation channel. AutoPEEP may be zero for most patients or significantly different from zero for patients that have obstructions in the exhalation channel, as possibly generated by secretions. In this case, the small flow during exhalation may result in an incomplete drain of the alveoli during the expiration phase. - ISO 80601-2-12 201.107.1
+FUN.29 - In PCV and PSV mode there shall be the possibility to press a single button to initiate an Inspiratory Pause (IP) that closes both inspiratory and expiratory valve at the end of the inspiratory phase as long as the operator holds the button but no longer than 40 sec. Rationale: The Inspiratory Pause will, allowing for the measurement of the Plateau Pressure (PP), the pressure reached inside the alveoli at the end of the inspiratory cycle. PP may be lower than the target inspiratory pressure P_insp provided by the ventilator. The difference between PP and the PEEP is called Driving Pressure, DP (DP = PP - PEEP). - ISO 80601-2-12 201.107.2
+FUN.30 - The high-level operation sequence shall follow the scheme shown in Figure 2.1
+
+2.1.1 Safety Related Functional Requirements
+This section covers the functional requirements imposed on the system based on the initiating
+events necessitating mitigating functions.
+
+ID - Requirement / Rationale - Input Ref.
+
+FUN.31 - Any normal operating mode or identified failure mode of the system and its components shall always result in a state of the system that is safe for the patient. Rationale: patient safety is primary concern - ISO 80601-2-12
+FUN.32 - In a worst-case failure, the controller shall leave the system in a state that allows the patient to inhale and exhale unimpeded. Rationale: patient safety is primary concern - ISO 80601-2-12 201.13.2.103
+FUN.33 - Any power failure shall leave the system in a state that allows the patient to inhale and exhale unimpeded. Rationale: patient safety is primary concern - ISO 80601-2-12
+FUN.34 - Any failure of the gas supply shall leave the system in a state that allows the patient to inhale and exhale unimpeded. Rationale: patient safety is primary concern
+FUN.35 - The system shall prevent airborne contaminants (particulate, viral, bacterial) being delivered from the ventilator to the patient. Rationale: patient safety is primary concern
+FUN.36 - The system shall prevent patient expiratory viral and bacterial contaminants from entering the atmosphere. Rationale: need to ensure that clinicians and other patients are not exposed
+FUN.37 - The system shall have an internal power source that allows operation for 120 minutes past the failure of the external power source. Rationale: regulatory requirement - ISO 80601-2-12
+FUN.38 - The system shall have clearly ranked (high/medium/low priority) visual alarms. Rationale: regulatory requirement - ISO 60601-1-8
+FUN.38.1 - The system shall raise an alarm when a parameter value goes outside the range defined for its associated alarm.
+FUN.39 - The system shall prompt the user before ventilation is started to enter user-controlled alarm thresholds for SAV.3- SAV.9 Rationale: alarm thresholds may vary from patient to patient
+FUN.40 - The system shall react to the inspiratory airway pressure at the patient being exceeded (Max P_insp alarm SAV.4) (e.g. by coughing) by truncating the inspiratory phase and immediately transitioning to expiration, quickly relieving the pressure. Rationale: need to avoid excessive pressure in the lungs
+FUN.41 - A failure of the GUI (e.g. GUI freezes) or a loss of communication between the GUI and the Controller shall raise a high-priority alarm and any ongoing ventilation process shall not be interrupted. Rationale: in order to keep the patient safe, the ventilation needs to continue even if there is no connection between the controller and the GUI
+FUN.42 - The communication between Controller and GUI shall be reliable.
+
+2.2 Measured and displayed parameters
+ID - Requirement / Rationale - Input Ref.
+The system shall measure and display the following values for the patient:
+Rationale: regulatory requirement
+FUN.43 - Respiratory rate (RR) of the patient measured by the ventilator, in units of breaths per minute (bpm).
+FUN.44 - Peak inspiratory pressure (Peak P_insp ) measured for the most recent breath.
+FUN.45 - Positive end expiratory pressure (PEEP) measured (in cmH2O) for the most recent breath.
+FUN.46 - Tidal volume (V_tidal) measured for the most recent breath (in mL).
+FUN.47 - Minute volume (V_E) measured (in slpm) by the ventilator.
+FUN.48 - Fraction of inspired oxygen (FiO2).
+FUN.48.1 - The user shall set the desired FiO2 value from which the +-3% alarm limits are derived. The input FiO2 value will have to be manually adjusted by the user until the desired FiO2 value is displayed. Indication in waveform. Rationale: regulatory requirement
+FUN.49 - Instantaneous airway pressure (PAW), measured in cmH2O.
+FUN.50 - Instantaneous flow, measured in slpm.
+FUN.51 - Instantaneous tidal volume (V_tidal), measured in mL. Parameters set by the user. Rationale: regulatory requirement
+FUN.52 - Ratio of Inspiratory time to Expiratory time (I:E).
+FUN.53 - Maximum inspiratory pressure (Max P_insp). Indication of the machine status. Rationale: regulatory requirement
+FUN.54 - Level of battery, i.e., the percentage of battery remaining.
+FUN.55 - Power source: if the system is receiving power from the main supply, or if it is running on backup battery power.
+FUN.56 - Value of the temperature inside the system unit is reported.
+FUN.57 - Current status of the system (running/stopped, PCV/PSV) is reported.
+FUN.58 - The remaining time for RM is displayed.
+
+2.3 Values and ranges
+2.3.1 Common values and ranges
+
+ID - Requirement / Rationale - Input Ref.
+PER.1 - Positive End Expiratory Pressure (PEEP)
+The expiratory pressure valve is adjusted by hand to set the desired PEEP value.
+Default: _
+Range: 5-20 cm
+Step Size: H2O continuous
+Rationale: This allows the alarm thresholds for the PEEP out-of-range to be set.
+PER.2 - Fraction of inspired oxygen (FiO2)
+The desired FiO2 is manually set on the gas blender and reported on the GUI.
+Default: _
+Range: 21-100
+Step Size: (blender dependent) continuous
+Rationale: This allows the alarm thresholds for the FiO2 out-of-range to be set.
+PER.3 - The user shall be able to start Recruitment Maneuver
+(RM).
+Note: Function shall be disabled in North America
+PER.3.1 - Before the start of procedure, the user shall be able to set the Pressure for the Recruitment Maneuver (PRM)
+Default: 20cmH2O
+Range: 0-50 cm H20
+Step Size: ± 1 cm H2O
+PER.3.2 - Before the start of procedure, the user shall be able to set timer RM (Time for Recruitment Maneuver).
+Default: 10 sec
+Range: 1-30 sec
+Step Size: ± 1 sec
+2.3.2 Default values and ranges for PCV parameters
+ID - Requirement / Rationale - Input Ref.
+Control Settings in PCV: The following parameters take default values indicated in requirements
+PER.4 - PER.7 and can be changed/controlled by the user in the allowed requirements indicated in PER.4 - PER.7
+PER.4 - Respiratory Rate (RR_PCV )
+Default: 12 b/min
+Range: 4-50 b/min
+Step Size: 1 b/min
+PER.5 - I:E Ratio (I:E_PCV )
+Default: 1:2
+Range: 1:1 - 1:4
+Step Size: 0.1 in E
+PER.6 - Target inspiratory pressure (P_insp_PCV )
+Default: 15 cm H2O
+Range: 2-50 cm H2O
+Step Size: 1 cm H2O
+PER.7 - ITS
+Default: 3 cm H2O/sec2
+Range: 1-9 cm H2O/sec2
+Step Size: 1 cm H2O/sec2
+2.3.3 Default values and ranges for PSV parameters
+ID - Requirement / Rationale - Input Ref.
+Control Settings in PSV mode: The following parameters take default values indicated in requirements PER.8 - PER.14 and can be changed/controlled by the user in the allowed range indicated in requirements PER.8 - PER.14
+PER.8 - Target inspiratory pressure (P_insp_PSV )
+Default: 15 cm H2O
+Range: 2-50 cm H2O
+Step Size: 1 cm H2O
+PER.9 - Inhale trigger sensitivity (ITS_PSV )
+Default: 3 cm H2O/sec2
+Range: 1-9 cm H2O/sec2
+Step Size: 1 cm H2O/sec2
+PER.10 - Expiratory trigger sensitivity (ETS)
+Default: 30%
+Range: 5-60% of peak flow
+Step Size: 1%
+PER.11 - Apnea lag
+Default: 30 sec
+Range: 10-60 sec
+Step Size: 1 sec
+Apnea backup PCV settings
+PER.12 - Respiratory Rate (RR_AP )
+Default: _
+Range: 4-50 b/min
+Step Size: 1 b/min
+PER.13 - I:E Ratio (I:E_AP )
+Default: 1:2
+Range: _
+Step Size: _
+PER.14 - Target inspiratory pressure (P_insp AP )
+Default: 0 cm H2O
+Range: 2-50 cm H2O
+Step Size: 1 cm H2O
+Rationale: Default value of P_insp AP in the apnea backup is left unset to ensure that the user set it in PSV mode in case of apnea lag.
+
+2.3.4 Default Alarm Thresholds Values and Ranges
+ID - Requirement / Rationale - Input Ref.
+Control Settings
+PER.15 - Max P_insp
+Default: 40 cm H2O
+Range: 10-80 cm H2O
+Step Size: 1 cm H2O
+- ISO 80601-2-12:201.12.4.106
+PER.16 - Min P_insp
+Default: 50% of P_insp
+Range: 10-100%
+Step Size: 10%
+PER.17 - Max PEEP
+Default: _
+Range: 3-23 cm H2O
+Step Size: 1 cm H2O
+PER.18 - Min PEEP
+Default: _
+Range: 0-20 cm H2O
+Step Size: 1 cm H2O
+PER.19 - Max V_tidal
+Default: 990 mL
+Range: 50-1500 mL
+Step Size: 50 mL
+PER.20 - Min V_tidal
+Default: 10 mL
+Range: 10-1500 mL
+Step Size: 10 mL
+PER.21 - Apnea lag
+Default: 30 sec
+Range: 10-60 sec
+Step Size: 1 sec
+PER.22 - Max V_E
+Default: 80 slpm
+Range: 2-80 slpm
+Step Size: 1 slpm
+PER.23 - Min V_E
+Default: 2 slpm
+Range: 2-80 slpm
+Step Size: 1 slpm
+PER.24 - Min RR
+Default: 4 b/min
+Range: 4-50 b/min
+Step Size: 1 b/min
+PER.25 - Max RR
+Default: 50 b/min
+Range: 4-50 b/min
+Step Size: 1 b/min
+
+2.4 Sensors and interfaces
+
+2.4.1 Sensors
+
+Figure 2.2: High level view of ventilator sensors
+- **Air and Oxygen Supply**: The diagram shows separate inputs for air and oxygen that feed into a gas blender (GB).
+- **Gas Blender**: The GB is responsible for mixing air and oxygen. It is equipped with a pressure sensor (PS) to monitor the pressure of the gas mixture.
+- **IN Valve**: The gas mixture then passes through the IN valve, which regulates the entry of the gas into the ventilator.
+- **Sensors**: 
+  - The flow sensor FI1 measures the unidirectional flow of gas to the patient.
+  - The oxygen concentration sensor (OS) measures the oxygen level in the gas being delivered to the patient.
+  - The pressure sensor PS ins measures the pressure in the entrance to the patient.
+- **Ventilator Representation**: The ventilator is depicted as a central box from which the gas is delivered to the patient (indicated by the silhouette of a human upper body and respiratory system).
+- **Flow Path to Patient**: After the ventilator, the flow sensor FI2 measures the bidirectional flow of gas between the ventilator and the patient.
+- **Exhalation**: Following the passage through the patient's system, the gas is expelled through the OUT valve. The pressure sensor PS exp measures the pressure in the expiratory line.
+- **PEEP Valve**: The Positive End Expiratory Pressure (PEEP) valve ensures a minimum level of pressure is maintained in the lungs after exhalation.
+- **GUI**: A Graphic User Interface (GUI) connected to the ventilator allows for monitoring and control of the ventilation process. This interface includes a switch (activated by alternating current AC or a battery), and has an LED indicator.
+- **Legends**: An additional legend box provides abbreviations and their meanings: GB stands for gas blender with pressure sensor (PS), PS for pressure sensor, OS for oxygen concentration sensor, FI1 for unidirectional flow sensor, FI2 for bidirectional flow sensor, PS ins for pressure sensor at the entrance to the patient, and PS exp for pressure sensor on the expiratory line.
+
+
+2.4.2 Interface between GUI and controller
+ID - Requirement / Rationale - Input Ref.
+The controller shall communicate the following parameters to the GUI when requested:
+INT.1 - Airway pressure (PAW) FUN.49
+INT.2 - Peak P_insp FUN.44
+INT.3 - Measured Respiratory Rate (RR) FUN.43
+INT.4 - Temperature FUN.56
+INT.5 - V_E FUN.47
+INT.6 - V_tidal FUN.46
+INT.7 - Oxygen concentration (FiO2) FUN.48
+INT.8 - PEEP FUN.45
+INT.9 - Battery power FUN.55
+INT.10 - Battery charge level FUN.54
+INT.11 - Remaining time for RM FUN.58
+INT.12 - Current Status of the ventilator (running/stopped, PCV/PSV) - FUN.57
+The GUI shall set the following parameters in the controller:
+INT.13 - RR_PCV - PER.4
+INT.14 - I:E_PCV - PER.5
+INT.15 - P_insp_PCV - PER.6
+INT.16 - ITS_PCV - PER.7
+INT.17 - P_insp_PSV - PER.8
+INT.18 - ITS_PSV - PER.9
+INT.19 - ETS - PER.10
+INT.20 - Apnea lag - PER.11
+INT.21 - RR_AP - PER.12
+INT.22 - P_insp AP - PER.14
+INT.23 - Max P_insp - PER.15
+INT.24 - Min P_insp - PER.16
+INT.25 - Min PEEP - PER.18
+INT.26 - Max PEEP - PER.17
+INT.27 - Max V_tidal_exp - PER.19
+INT.28 - Min V_tidal_exp - PER.20
+INT.29 - Max V_tidal_insp - PER.19
+INT.30 - Min V_tidal_insp - PER.20
+INT.31 - Max V_E - PER.21
+INT.32 - Min V_E - PER.22
+INT.33 - Min RR - PER.24
+INT.34 - Max RR - PER.25
+INT.35 - Start PCV - FUN.19
+INT.36 - Stop PCV/PSV - FUN.19, FUN.24
+INT.37 - Start PSV - FUN.24
+INT.38 - Expiratory Pause on - FUN.28
+INT.39 - Expiratory Pause off - FUN.28
+INT.40 - Inspiratory Pause on - FUN.29
+INT.41 - Inspiratory Pause off - FUN.29
+INT.42 - Recruitment Maneuver on - PER.3
+INT.43 - Recruitment Maneuver off - PER.3
+INT.44 - Pressure Recruitment Maneuver - PER.3.1
+INT.45 - Maximum RM time - PER.3.2
+
+2.4.3 Interface between Hardware and Controller
+ID - Requirement / Rationale - Input Ref.
+The controller shall set the following parameters in the HW :
+INT.46 - The value of the proportional solenoid valve that controls the inspiratory pressure to the patient (IN valve). Rationale: the controller computes the value of the in valve to allow the patient the inspiration.
+INT.47 - The value of the three-way simple solenoid valve used to control the pressure to the valve that permits patient expiratory breath (OUT valve). The port connected to the expiratory valve is normally open to the atmosphere. Rationale: the controller commands the out valve to allow the patient expiration.
+INT.48 - The value of the LED when an alarm is raised/reset
+
+The controller shall get the values from the following sensors (HW):
+INT.49 - The digital spirometer flow sensor (FI1).
+INT.50 - The electronic oxygen sensor (0% - 100%) (OS).
+INT.51 - The differential pressure sensor to measure the flow to the patient (FI2).
+INT.52 - The sensor that measures the expiratory pressure near the patient (PEEP) (PS exp).
+INT.53 - The sensor that measures inspiratory pressure provided by the ventilator (PS ins).
+INT.54 - The sensor that measures the supply gas pressure to the ventilator (GB).
+INT.55 - Temperature
+INT.56 - Battery charge level
+INT.57 - Power supply type
+INT.58 - Fan Tachometer
+
+2.5 Alarm requirements
+ID - Requirement / Rationale - Input Ref.
+SAV.1 - The system shall raise an alarm of at least low priority when the delivered oxygen concentration changes by more than 3% volume of a user-controlled target FiO2 value. Rationale: a drop of oxygen concentration might indicate a failing gas supply. - ISO 80601-2-12 201.12.4.101
+SAV.2 - The system shall raise various alarms when the primary power source falls outside the range necessary to maintain normal operation. (related to essential performance as per Table 201.101 of the 80601-2-12) In particular: Rationale: regulatory requirement - ISO 80601-2-12 201.11.8.101
+SAV.2.1 - Upon successful switchover to backup battery (at least low priority). - ISO 80601-2-12 201.11.8.101 (d1)
+SAV.2.2 - When the backup battery nears depletion, and at least 10 min remain until the loss of ventilation at least a medium priority alarm shall be raised. - ISO 80601-2-12 201.11.8.101 (f1)
+SAV.2.3 - When the backup battery nears depletion, and at least 5 min remain until the loss of ventilation the alarm shall be escalated to high priority. - ISO 80601-2-12 201.11.8.101 (f2)
+SAV.3 - The system shall raise an alarm (at least low priority) when the minimum inspiratory airway pressure (Min P_insp ) is not achieved.
+SAV.4 - The system shall raise a high priority alarm when the peak inspiratory airway pressure (Max P_insp) is exceeded. - ISO 80601-2-12 201.12.4.106 (b1)
+SAV.4.1 - The high airway pressure alarm condition delay shall not exceed 200 ms and the ventilator shall: act to attempt to cause the pressure to start to decline within that duration; and act to prevent the pressure from continuing to rise. - ISO 80601-2-12 201.12.4.106 (g)
+SAV.4.2 - Whenever the high-pressure alarm condition occurs, the ventilator shall, within no more than two respiratory cycles or 15 s, whichever is less, reduce the airway pressure to either: the atmospheric pressure; or the set PEEP level. - ISO 80601-2-12 201.12.4.106 (h)
+SAV.5 - The system shall raise a PEEP alarm of at least medium priority if the expiratory airway pressure falls below the user-set low pressure alarm limit (Min PEEP). - ISO 80601-2-12 201.12.4.107 ( c)
+SAV.6 - The system shall raise an alarm when the measured respiratory rate is below a user-controlled value (Min RR).
+SAV.7 - The system shall raise an alarm when the measured respiratory rate exceeds a user-controlled value (Max RR).
+SAV.8 - The system shall raise an alarm of at least medium priority when the expiratory tidal volume V_tidal is too low (Min V_tidal ): patient is hypo-ventilating. - ISO 80601-2-12 201.12.4.103.1 (f,g)
+SAV.9 - The system shall raise an alarm of at least medium priority when the expiratory tidal volume V_tidal is too high (Max V_tidal ). - ISO 80601-2-12 201.12.4.103.1 (f,g)
+SAV.10 - The system shall raise an alarm of at least low priority when the input gas pressure is below 3.7 bar. - ISO 80601-2-12 201.13.2.102 (C)
+SAV.11 - The system shall raise an alarm of at least low priority when the input gas pressure exceeds 5.2 bar. - ISO 80601-2-12 201.13.2.102 (c)
+SAV.12 - The system shall raise a high priority alarm when the airway pressure measured near the input valve is below a user-controlled value (Min P_insp). - ISO 80601-2-12 201.12.4.106 (b1)
+SAV.13 - The system shall raise a high priority alarm when the airway pressure measured near the input valve exceeds a user-controlled value (Max P_insp). - ISO 80601-2-12 201.12.4.106 (b1)
+SAV.14 - The system shall raise an alarm if there is significant leakage in the gas circuit (200 ml/min at 50 cmH2O). Rationale: - ISO 80601-2-12 201.102.7.1 (a) requires that there should not be unintended leakage in the patient breathing circuit of higher than (200 ml/min at 50 cmH2O). Therefor,e such a condition should generate an alarm.
+SAV.15 - The system shall raise a high priority alarm if there is an obstruction in the pneumatic circuit - ISO 80601-2-12 201.12.4.108 (b1) 
+SAV.15.1 - The alarm condition delay shall not exceed more than two respiratory cycles or 5 s, whichever is greater. - ISO 80601-2-12 201.12.4.108 (c)
+SAV.15.2 - Whenever the obstruction alarm condition occurs, the ventilator shall, within no more than one respiratory cycle, reduce the airway pressure to either atmospheric pressure; or the set PEEP level. - ISO 80601-2-12 201.12.4.108 (d)
+SAV.16 - The system shall raise an alarm when the inspiratory flux is below a user-controlled value (Min V_E).
+SAV.17 - The system shall raise an alarm when the inspiratory flux exceeds a user-controlled value (Max V_E).
+SAV.18 - The system shall raise an alarm of at least medium priority when the expiratory flux is below a user-controlled value (Min V_E). - ISO 80601-2-12 201.12.4.103 (f2)
+SAV.19 - The system shall raise an alarm of least medium priority when the expiratory flux exceeds a user-controlled value (Max V_E). - ISO 80601-2-12 201.12.4.103 (f1)
+SAV.20 - The system shall raise an alarm of least medium priority if peak inspiratory pressure is 3 cmH2O below the PEEP value. - ISO 80601-2-12 201.12.4.109
+SAV.21 - The system shall raise an alarm if the internal temperature of the system exceeds 75◦C. - ISO 60601-1 13.1.
+SAV.22 - The system shall alarm for apnea (Apnea lag) in PSV mode. Rationale: required to ensure that patient on PSV who stops breathing is attended to
+SAV.23 - The system shall raise an alarm in case of a GUI failure (e.g. GUI freezes) or loss of communication between Controller and GUI.
+SAV.24 - The system shall raise PEEP alarm of at least medium priority if the expiratory airway pressure exceeds the userset desired pressure PEEP alarm limit (Max PEEP). (related to essential performance as per Table 201.101 of the 80601-2-12) - ISO 80601-2-12 201.12.4.107
+SAV.24.1 - The alarm condition delay for high PEEP alarm condition shall not exceed the duration of three inflations. - ISO 80601-2-12 201.12.4.107 (d)
+SAV.25 - The ventilator shall be equipped with an alarm system that detects a technical alarm condition to indicate when conditions in the patient breathing circuit reach the alarm limit (Min PEEP) for disconnection. (related to essential performance as per Table 201.101 of the 80601-2-12) - ISO 80601-2-12 201.12.4.109
+SAV.26 - The system shall alarm in case the communication of the controller with any of the sensors is lost

@@ -1,0 +1,27 @@
+1. **Ambiguities or Unclear Statements in the Alarms Section as a Whole:**
+
+- **AL.1 and AL.1.1:** The statement "the alarm threshold used while user changes are the last saved" in AL.1.1 is ambiguous. It's unclear whether it means the last saved thresholds are used during the adjustment process or if they are applied after changes are saved. This could lead to confusion about when updated thresholds take effect.
+- **AL.5:** The requirement that "Operator action may be required to display this information" is vague. It does not specify what action is needed or under what circumstances it would be required, leaving room for interpretation.
+- **AL.6:** The term "visually indicated" is broad and could encompass a range of indicators. Specific details on how each condition should be differentiated visually are not provided.
+- **AL.9:** The phrase "prevent the operator from saving changes to the alarm preset" could be interpreted in multiple ways. It's unclear if this means the system should restrict all changes or just certain types of changes to the preset.
+- **General:** The section lacks specificity regarding the behavior of the system in various scenarios, such as how to handle conflicting alarm conditions or the exact process for setting and adjusting alarm thresholds.
+
+2. **Ambiguities or Unclear Statements within the Alarms Table:**
+
+- **AL.14.2 and AL.14.3:** The conditions for battery failure alarms based on remaining time (10 and 5 minutes) are clear, but there's no mention of how accurately the system must predict remaining battery time. This could lead to premature or delayed alarms if the battery discharge rate is variable.
+- **AL.17:** The specification for leakage in the gas circuit mentions a specific leakage rate and pressure but does not clarify how this is measured or over what time period.
+- **AL.18 and AL.19:** The definitions of "complete obstruction" and "partial obstruction" based on internal pressure and PAW (Patient Airway Pressure) could benefit from more detail on measurement intervals and the exact conditions that differentiate complete from partial obstruction.
+- **AL.20.1, AL.21.1:** The maximum delay for alarm conditions is specified, but it's unclear if this delay is from the detection of the condition or from some other event.
+- **AL.38 vs. AL.38.1:** Both alarms concern communication failures between the controller and GUI, but one is raised by the controller and the other by the GUI. It's ambiguous how these alarms differ in practice and how the system determines which component is at fault.
+
+3. **Ambiguities or Unclear Statements within the Alarm List Subsection:**
+
+- **General:** The alarm list provides detailed conditions for each alarm but lacks clarity on several fronts, such as the precision required for measurements (e.g., voltage levels, pressure), the duration over which conditions must be met to trigger an alarm, and how quickly the system must respond to changing conditions.
+- **AL.43:** The condition "I:E ratio is less than 0.01 for more than 4 consecutive cycles" is specific, but it doesn't specify the tolerance for measurement or detection, potentially leading to false alarms or missed detections.
+
+4. **Ambiguities or Unclear Statements within the Visual Alarm Signals Subsection:**
+
+- The subsection specifies colors, flashing frequencies, and duty cycles for different priority levels but does not address how these signals are presented in the presence of multiple alarms of varying priorities. It's unclear whether there's a hierarchy of visual signals or if they are displayed simultaneously in some manner.
+- The use of "Yellow" for both medium and low priority without a clear distinction in flashing frequency (0.6Hz for medium and constant for low) could potentially confuse operators, especially under stressful conditions. The specification that low priority alarms have a constant light could be interpreted in various ways; more detail on how "constant" is defined (e.g., always on, no flashing) would be beneficial.
+
+Overall, while the alarms section attempts to cover a comprehensive range of conditions and responses, the lack of specificity in certain areas could lead to varied interpretations, potentially affecting the implementation and effectiveness of the alarm system in real-world scenarios.
