@@ -18,7 +18,7 @@ Pipeline for generating LLM feedback on requirement analysis using the GPT-4 mod
 
 ## Pipeline for QA Analysis
 
-<img src="imgs/validation_pipeline.jpg" width="700px" align="center" />
+<img src="imgs/validation_pipeline.JPG" width="700px" align="center" />
 
 Pipeline for Analyzing GPT-4 Capabilities in Answering Questions to Aid Stakeholders in Ensuring the Quality of Requirements: Questions related to system modeling are extracted from GitHub issues and parsed to be fed to the GPT-4 model via the OpenAI API. System experts produce the Ground Truth (GT) answers to these questions. Each LLM-generated answer is then validated against the GT answers.
 
