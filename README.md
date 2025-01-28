@@ -31,12 +31,12 @@ If you find our work useful in your research or if you use parts of this code pl
 ```
 @article{,
   title={Can GPT-4 aid in detecting ambiguities, inconsistencies, and incompleteness in requirements analysis? A comprehensive case study.},
-  author={},
-  journal={},
-  volume={},
-  number={},
-  pages={},
+  author={Mahbub, Taslim and Dghaym, Dana and Shankarnarayanan, Aadhith and Syed, Taufiq and Shapsough, Salsabeel and Zualkernan, Imran},
+  journal={IEEE Access},
   year={2024},
+  volume={12},
+  number={},
+  pages={171972-171992},
   publisher={IEEE}
 }
 ```
